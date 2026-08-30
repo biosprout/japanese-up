@@ -1,0 +1,17 @@
+{
+  "name": "JAPANESE UP! 中学国語",
+  "short_name": "JAPANESE UP!",
+  "description": "中1から高校受験まで、139問の中学国語クイズ。漢字・語彙・文法・古典の4分野、全問解説つき。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F4F2",
+  "theme_color": "#B03A48",
+  "lang": "ja",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

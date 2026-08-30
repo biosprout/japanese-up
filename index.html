@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#B03A48">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JAPANESE UP!">
+<title>JAPANESE UP! 中学国語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F4F2;--panel:#FFFFFF;--panel2:#F0EAE8;
+    --primary:#B03A48;--primary-dark:#8A2B37;--accent:#C79A2E;
+    --danger:#D0303F;--text:#1F1A1A;--sub:#7A6E6E;--border:#E5DCDA;
+    --shadow:0 8px 28px rgba(176,58,72,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Noto Sans JP',system-ui,sans-serif;color:var(--text);
+    background:radial-gradient(circle at 20% 0%,#EFE3E3 0%,#F7F4F2 55%);min-height:100dvh;display:flex;justify-content:center}
+  .app{width:100%;max-width:480px;min-height:100dvh;display:flex;flex-direction:column;position:relative}
+  .topbar{padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;
+    background:linear-gradient(180deg,#FBF6F0 70%,rgba(251,246,240,0))}
+  .brand .logo{font-family:'Poppins';font-weight:800;font-size:23px;letter-spacing:-.5px;color:var(--primary)}
+  .brand .logo span{color:var(--accent)}
+  .brand .sub{font-size:11px;color:var(--sub);font-weight:500;margin-top:2px}
+  .rankpill{background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:800;color:var(--accent)}
+  .screen{flex:1;overflow-y:auto;padding:6px 20px 40px;-webkit-overflow-scrolling:touch}
+  .statcard{background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px;display:flex;align-items:center;gap:18px}
+  .ring{position:relative;width:92px;height:92px;flex:0 0 auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .in b{font-family:'Poppins';font-size:23px;font-weight:800;color:var(--primary);line-height:1}
+  .ring .in small{font-size:9px;color:var(--sub);font-weight:600;margin-top:2px}
+  .stinfo h2{font-size:15px;font-weight:900;margin-bottom:8px}
+  .stinfo .row{display:flex;gap:16px}
+  .stinfo .row div{font-size:11px;color:var(--sub);font-weight:600}
+  .stinfo .row b{display:block;font-family:'Poppins';font-size:19px;color:var(--text);font-weight:700}
+  .label{font-size:12px;font-weight:800;color:var(--sub);margin:10px 2px 10px;letter-spacing:.3px}
+  .lvrow{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:6px}
+  .lvbtn{background:var(--panel);border:1.5px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:.15s}
+  .lvbtn:active{transform:scale(.97)}
+  .lvbtn .n{font-size:13px;font-weight:900;display:block}
+  .lvbtn .d{font-size:9px;color:var(--sub);font-weight:600;margin-top:3px;display:block}
+  .lvbtn.on{background:var(--primary);border-color:var(--primary);color:#FFFFFF}
+  .lvbtn.on .d{color:rgba(8,32,26,.7)}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .fbtn{background:var(--panel);border:1.5px solid var(--border);border-radius:15px;padding:14px;cursor:pointer;transition:.15s;text-align:left}
+  .fbtn:active{transform:scale(.98)}
+  .fbtn .ic{font-size:20px}
+  .fbtn .n{font-size:13px;font-weight:800;margin-top:5px}
+  .fbtn .m{font-size:10px;color:var(--sub);font-weight:600;margin-top:3px}
+  .fbtn .bar{height:4px;background:var(--border);border-radius:99px;margin-top:8px;overflow:hidden}
+  .fbtn .bar i{display:block;height:100%;background:var(--primary);border-radius:99px}
+  .btn{border:none;border-radius:14px;font-family:inherit;font-weight:800;font-size:15px;padding:15px;cursor:pointer;transition:.15s;width:100%}
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--primary);color:#FFFFFF}
+  .btn-ghost{background:var(--panel);color:var(--primary);border:1.5px solid var(--border)}
+  .btn-accent{background:var(--accent);color:#6B4A00}
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--sub);font-weight:700;font-size:14px;cursor:pointer;padding:6px 2px;margin-bottom:6px;font-family:inherit}
+  .qhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .qhead .left{display:flex;align-items:center;gap:10px}
+  .qhead h2{font-size:16px;font-weight:900}
+  .timer{font-family:'Poppins';font-weight:800;font-size:20px;color:var(--accent)}
+  .timer.warn{color:var(--danger)}
+  .combo{font-family:'Poppins';font-weight:800;font-size:13px;color:var(--accent)}
+  .bar-top{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .bar-top i{display:block;height:100%;background:var(--primary);border-radius:99px;transition:width .3s}
+  .qcard{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:22px 18px;box-shadow:var(--shadow);margin-bottom:14px}
+  .qmeta{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .tagf{font-size:10px;font-weight:800;color:var(--primary);letter-spacing:.4px}
+  .taglv{font-size:9px;padding:3px 8px;border-radius:7px;font-weight:800}
+  .taglv.easy{background:#F7E9D8;color:#C2571F}
+  .taglv.std{background:#FFF6E2;color:var(--accent)}
+  .taglv.hard{background:#FFE8EC;color:var(--danger)}
+  .taglv.ibo{background:#F0E6FA;color:#7A3FC4}
+  .lvbtn .n{font-size:12px}
+  .qtext{font-size:17px;font-weight:700;line-height:1.55}
+  .choices{display:grid;gap:9px}
+  .choice{background:var(--panel);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;font-family:inherit;font-size:15px;font-weight:700;
+    color:var(--text);cursor:pointer;text-align:left;transition:.12s;line-height:1.45}
+  .choice:active{transform:scale(.99)}
+  .choice.correct{background:var(--primary);border-color:var(--primary);color:#FFFFFF}
+  .choice.wrong{background:var(--danger);border-color:var(--danger);color:#7A0012}
+  .choice.dim{opacity:.4}
+  .exp{border-radius:14px;padding:15px;margin-top:12px;font-size:13px;line-height:1.65;background:var(--panel2);border:1px solid var(--border)}
+  .exp b{color:var(--primary)}
+  .result{text-align:center;padding:26px 10px}
+  .result .rank{font-family:'Poppins';font-size:62px;font-weight:800;line-height:1;color:var(--accent)}
+  .result .emoji{font-size:48px;margin-bottom:4px}
+  .result .big{font-family:'Poppins';font-size:44px;font-weight:800;color:var(--primary);line-height:1;margin-top:6px}
+  .result h2{font-size:18px;font-weight:900;margin:10px 0 4px}
+  .result p{color:var(--sub);font-weight:600;font-size:13px;margin-bottom:6px}
+  .misslist{text-align:left;background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:4px;margin:14px 0;max-height:260px;overflow-y:auto}
+  .misslist .r{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5}
+  .misslist .r:last-child{border:none}
+  .misslist .r .q{font-weight:700;margin-bottom:4px}
+  .misslist .r .a{color:var(--primary);font-weight:700;font-size:12px}
+  .lvstat{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .lvstat:last-child{margin-bottom:0}
+  .lvstat .ln{font-size:10px;font-weight:800;width:50px;flex:0 0 auto}
+  .lvstat .ln.lv-easy{color:#C2571F}
+  .lvstat .ln.lv-std{color:var(--accent)}
+  .lvstat .ln.lv-hard{color:var(--danger)}
+  .lvstat .ln.lv-ibo{color:#7A3FC4}
+  .lvstat .lb{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+  .lvstat .lb i{display:block;height:100%;border-radius:99px}
+  .lvstat .lb i.lv-easy{background:#C2571F}
+  .lvstat .lb i.lv-std{background:var(--accent)}
+  .lvstat .lb i.lv-hard{background:var(--danger)}
+  .lvstat .lb i.lv-ibo{background:#7A3FC4}
+  .lvstat .lnum{font-family:'Poppins';font-size:10px;font-weight:700;color:var(--sub);width:48px;text-align:right;flex:0 0 auto}
+  .lvstat .lrate{font-family:'Poppins';font-size:10px;font-weight:800;width:34px;text-align:right;flex:0 0 auto}
+  .ach-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .achb{background:var(--panel);border:1.5px solid var(--border);border-radius:12px;padding:9px 8px;opacity:.5}
+  .achb.got{opacity:1;border-color:var(--accent);background:#FFF6E2}
+  .achb .an{font-size:10px;font-weight:800;line-height:1.3}
+  .achb .ad{font-size:8px;color:var(--sub);font-weight:600;margin-top:3px;line-height:1.3}
+    .evr{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:11px 13px;margin-bottom:7px;opacity:.45}
+  .evr.got{opacity:1}
+  .evr.cur{border-color:var(--accent);background:#FFF6E2;box-shadow:0 0 0 1.5px var(--accent) inset}
+  .evr .evn{font-family:'Poppins';font-size:11px;font-weight:800;color:var(--sub);width:20px;flex:0 0 auto;text-align:right}
+  .evr .eve{font-size:22px;flex:0 0 auto}
+  .evr .evb{flex:1;min-width:0}
+  .evr .evt{font-size:13px;font-weight:800;line-height:1.35}
+  .evr .evd{font-family:'Poppins';font-size:10px;color:var(--sub);font-weight:700;margin-top:2px}
+  .evr.cur .evd{color:var(--accent)}
+  .zkr{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;opacity:.55}
+  .zkr.got{opacity:1}
+  .zke{font-size:26px;flex:0 0 auto}
+  .zkb{flex:1}
+  .zkn{font-size:13px;font-weight:900}
+  .zkd{font-size:11px;color:var(--sub);font-weight:600;line-height:1.5;margin-top:3px}
+  .zktag{font-size:8px;padding:2px 7px;border-radius:6px;font-weight:800;vertical-align:1px}
+  .zktag.N{background:#EADFD2;color:#7D6A57}
+  .zktag.R{background:#F7E9D8;color:#C2571F}
+  .zktag.SR{background:#F7E9D8;color:var(--accent)}
+  .zktag.H{background:#E9ECFF;color:#4A57C4}
+  .row2{display:flex;gap:10px}
+  .row2 .btn{flex:1}
+  .help{font-size:11px;color:var(--sub);line-height:1.6;margin-top:8px}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    padding:12px 22px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .pop{position:fixed;inset:0;pointer-events:none;z-index:40}
+  .pop span{position:absolute;left:50%;top:45%;font-size:24px;animation:fly .8s ease-out forwards}
+  @keyframes fly{0%{opacity:1;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><div class="logo">JAPANESE <span>UP!</span></div><div class="sub">中学国語 / 中1〜高校受験</div></div>
+    <div class="rankpill" id="rankPill">総合 --</div>
+  </div>
+  <div id="updBar" style="display:none;align-items:center;gap:10px;background:var(--accent);color:#1A1400;padding:10px 14px;border-radius:12px;margin:0 0 12px;font-size:13px;font-weight:700">
+    <b style="flex:1">新しいバージョンがあります</b>
+    <button onclick="forceUpdate()" style="background:#1A1400;color:var(--accent);border:0;border-radius:8px;padding:7px 12px;font-weight:800;font-size:12px">更新する</button>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="screen" id="screen"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STORE_KEY='japaneseup_v1';
+const OLD_KEYS=[];
+try{ if(!localStorage.getItem(STORE_KEY)){
+  for(const k of OLD_KEYS){const o=localStorage.getItem(k); if(o){localStorage.setItem(STORE_KEY,o);break;}}
+} }catch(e){}
+let mem=null;
+const FIELDS=[
+  ['kanji','漢字（読み・書き）'],
+  ['goi','語彙（熟語・慣用句）'],
+  ['bunpo','文法（品詞・敬語）'],
+  ['koten','古文・漢文']
+];
+const Q=[
+  {id:'k_e1',f:'kanji',lv:'easy',q:'「委ねる」の読みはどれか。',ch:['ゆだねる','おもねる','つらねる','かさねる'],a:0,ex:'ゆだねる。「委任」「委託」の委で、他人にまかせるという意味。'},
+  {id:'k_e2',f:'kanji',lv:'easy',q:'「速やか」の読みはどれか。',ch:['すみやか','あざやか','おだやか','ゆるやか'],a:0,ex:'すみやか。送りがなが「やか」となる語は他に鮮やか・穏やかなどがある。'},
+  {id:'k_e3',f:'kanji',lv:'easy',q:'「著しい」の読みはどれか。',ch:['いちじるしい','はなはだしい','おびただしい','けわしい'],a:0,ex:'いちじるしい。はっきりと目立つようす。「著」には「あらわす」の読みもある。'},
+  {id:'k_e4',f:'kanji',lv:'easy',q:'「怠る」の読みはどれか。',ch:['おこたる','あやまる','いつわる','かたる'],a:0,ex:'おこたる。「怠慢」「怠惰」の怠。'},
+  {id:'k_e5',f:'kanji',lv:'easy',q:'「募る」の読みはどれか。',ch:['つのる','あおる','みなぎる','かたよる'],a:0,ex:'つのる。「募集」の募で、呼びかけて集める、また程度が強まるの意味。'},
+  {id:'k_e6',f:'kanji',lv:'easy',q:'「陥る」の読みはどれか。',ch:['おちいる','とどこおる','ひるがえる','うけたまわる'],a:0,ex:'おちいる。「陥没」「欠陥」の陥。'},
+  {id:'k_e7',f:'kanji',lv:'easy',q:'「培う」の読みはどれか。',ch:['つちかう','やしなう','ともなう','になう'],a:0,ex:'つちかう。もとは土をかけて植物を育てる意味で、そこから力を養う意味に広がった。'},
+  {id:'k_e8',f:'kanji',lv:'easy',q:'「潔い」の読みはどれか。',ch:['いさぎよい','とうとい','いやしい','まぎらわしい'],a:0,ex:'いさぎよい。「清潔」「潔白」の潔。'},
+  {id:'k_e9',f:'kanji',lv:'easy',q:'「かんき」で「大声で呼びかけて注意を促す」意味の漢字はどれか。',ch:['喚起','歓喜','換気','乾期'],a:0,ex:'喚起。歓喜は喜び、換気は空気の入れ替え、乾期は雨の少ない時期。'},
+  {id:'k_e10',f:'kanji',lv:'easy',q:'「たいしょう」で「二つを比べる」意味の漢字はどれか。',ch:['対照','対称','対象','大将'],a:0,ex:'対照。対称は左右がつり合うこと、対象は働きかける相手。'},
+  {id:'k_e11',f:'kanji',lv:'easy',q:'「ほしょう」で「損害を金銭で埋め合わせる」意味の漢字はどれか。',ch:['補償','保障','保証','歩硝'],a:0,ex:'補償。保障は権利を守ること、保証は間違いないと請け合うこと。'},
+  {id:'k_e12',f:'kanji',lv:'easy',q:'「かいほう」で「病人の世話をする」意味の漢字はどれか。',ch:['介抱','解放','開放','快方'],a:0,ex:'介抱。解放は自由にすること、開放は開け放つこと、快方は病気がよくなること。'},
+  {id:'k_e13',f:'kanji',lv:'easy',q:'「せいさん」で「きちんと計算し直して整理する」意味の漢字はどれか。',ch:['清算','成算','精算','生産'],a:2,ex:'精算は金額を細かく計算すること。清算は貸し借りや関係を整理して終わらせること。'},
+  {id:'k_e14',f:'kanji',lv:'easy',q:'「ついきゅう」で「利益や幸福をどこまでも求める」意味の漢字はどれか。',ch:['追求','追及','追究','追給'],a:0,ex:'追求は求める、追及は責任を問いつめる、追究は学問的に深く調べる。'},
+  {id:'k_e15',f:'kanji',lv:'easy',q:'「おさめる」で「学問や技術を身につける」意味の漢字はどれか。',ch:['修める','納める','収める','治める'],a:0,ex:'修める。納めるは受け取る側に渡す、収めるはしまう、治めるは統治する。'},
+  {id:'k_e16',f:'kanji',lv:'easy',q:'「たずねる」で「質問する」意味の漢字はどれか。',ch:['尋ねる','訪ねる','伺ねる','問ねる'],a:0,ex:'尋ねる。訪ねるは人や場所を訪問すること。'},
+  {id:'k_e17',f:'kanji',lv:'easy',q:'「はかる」で「相談する」意味の漢字はどれか。',ch:['諮る','計る','測る','量る'],a:0,ex:'諮る。「諮問」の諮。計るは時間や数、測るは長さや面積、量るは重さや容積。'},
+  {id:'k_e18',f:'kanji',lv:'easy',q:'「うつす」で「病気などをうつらせる」意味の漢字はどれか。',ch:['移す','写す','映す','遷す'],a:0,ex:'移す。写すは書き写す、映すは映像を投じる。'},
+  {id:'k_e19',f:'kanji',lv:'easy',q:'「ぜんあく」のように、意味が反対の漢字を重ねた熟語はどれか。',ch:['善悪','岩石','日照','高原'],a:0,ex:'善悪は反対の意味の組み合わせ。岩石は似た意味、日照は主語述語、高原は修飾関係。'},
+  {id:'k_e20',f:'kanji',lv:'easy',q:'「読書」と同じ成り立ちの熟語はどれか。',ch:['登山','岩石','高低','日没'],a:0,ex:'読書と登山はどちらも「〜を…する」で、下の字が上の字の目的語になっている。'},
+  {id:'k_s1',f:'kanji',lv:'std',q:'「忌憚のない意見」の「忌憚」の読みと意味の組み合わせはどれか。',ch:['きたん・遠慮','きだん・冗談','いたん・異論','きけん・危険'],a:0,ex:'きたん。「忌憚のない」で遠慮のない、率直なという意味になる。'},
+  {id:'k_s2',f:'kanji',lv:'std',q:'「破綻」の読みはどれか。',ch:['はたん','はじょう','はてい','はさく'],a:0,ex:'はたん。もとは布のほころびの意味で、そこから物事が成り立たなくなる意味に。'},
+  {id:'k_s3',f:'kanji',lv:'std',q:'「示唆」の読みはどれか。',ch:['しさ','しさく','じさ','しめさ'],a:0,ex:'しさ。それとなく示すこと。「示唆に富む」のように使う。'},
+  {id:'k_s4',f:'kanji',lv:'std',q:'「進捗」の読みはどれか。',ch:['しんちょく','しんぽ','しんてん','しんしょう'],a:0,ex:'しんちょく。物事が進みはかどること。'},
+  {id:'k_s5',f:'kanji',lv:'std',q:'「顕著」の読みと意味の組み合わせとして正しいものはどれか。',ch:['けんちょ・はっきり目立つ','けんしょ・かすかな','げんちょ・当然の','けんちょ・めずらしい'],a:0,ex:'けんちょ。だれの目にもはっきりわかるほど目立つこと。'},
+  {id:'k_s6',f:'kanji',lv:'std',q:'「かんしん」で「深く感じて心を動かされる」意味の漢字はどれか。',ch:['感心','関心','歓心','寒心'],a:0,ex:'感心。関心は興味、歓心は喜ぶ気持ち（歓心を買う）、寒心はぞっとすること。'},
+  {id:'k_s7',f:'kanji',lv:'std',q:'「いぎ」で「異なる意見を唱える」意味の漢字はどれか。',ch:['異議','意義','威儀','異義'],a:0,ex:'異議。意義は価値や意味、威儀は礼儀正しい態度。「異議を唱える」「意義がある」。'},
+  {id:'k_s8',f:'kanji',lv:'std',q:'「かてい」で「物事が進んでいく道すじ」を表す漢字はどれか。',ch:['過程','課程','家庭','仮定'],a:0,ex:'過程はプロセス、課程は学校のカリキュラム、仮定は仮に決めること。'},
+  {id:'k_s9',f:'kanji',lv:'std',q:'「たいせい」で「物事を受け入れる構えや仕組み」を表す漢字はどれか。',ch:['体制','態勢','大勢','体勢'],a:1,ex:'態勢は一時的な身構え。体制は社会や組織の恒常的な仕組み、体勢は体の構え。'},
+  {id:'k_s10',f:'kanji',lv:'std',q:'「絶体絶命」の「体」を「対」と書くのが誤りである理由はどれか。',ch:['体と命がともに窮まる状況を表す語だから','対義語ではないから','四字熟語だから','当て字だから'],a:0,ex:'身も命も追いつめられた状態を表す。「絶対」とは無関係な語源をもつ。'},
+  {id:'k_s11',f:'kanji',lv:'std',q:'「未曾有」の読みはどれか。',ch:['みぞう','みそゆう','びぞう','みぞうゆう'],a:0,ex:'みぞう。「いまだ曽て有らず」で、これまで一度もなかったこと。'},
+  {id:'k_s12',f:'kanji',lv:'std',q:'「相殺」の読みはどれか。',ch:['そうさい','そうさつ','あいさつ','そうざん'],a:0,ex:'そうさい。差し引いて損得をなくすこと。「殺」を「さい」と読む例。'},
+  {id:'k_h1',f:'kanji',lv:'hard',q:'「うがった見方」の本来の意味はどれか。',ch:['物事の本質を的確にとらえた見方','ひねくれた見方','大げさな見方','浅い見方'],a:0,ex:'「穿つ」は掘り下げる意味で、本来は本質を見抜くこと。ひねくれた見方の意で使うのは本来の用法ではない。'},
+  {id:'k_h2',f:'kanji',lv:'hard',q:'「憮然」の本来の意味はどれか。',ch:['失望して呆然とするようす','腹を立てているようす','平然としているようす','喜んでいるようす'],a:0,ex:'本来は落胆してぼんやりするようす。腹を立てる意味で使われることが多いが本来とは異なる。'},
+  {id:'k_h3',f:'kanji',lv:'hard',q:'「役不足」の本来の意味はどれか。',ch:['本人の力量に対して役目が軽すぎること','力量が足りないこと','人手が足りないこと','役に立たないこと'],a:0,ex:'謙遜のつもりで「私では役不足です」と言うと逆の意味になる。正しくは「力不足」。'},
+  {id:'k_h4',f:'kanji',lv:'hard',q:'「情けは人の為ならず」の本来の意味はどれか。',ch:['人に親切にすればめぐりめぐって自分に返る','甘やかすとその人のためにならない','情けは無用である','人助けは損である'],a:0,ex:'「人の為ならず」は「その人のためだけではない」の意。'},
+  {id:'k_h5',f:'kanji',lv:'hard',q:'「破天荒」の本来の意味はどれか。',ch:['前例のないことを初めて成しとげること','豪快で大胆なこと','型破りで乱暴なこと','荒々しいこと'],a:0,ex:'未開の地を切り開く意味から。豪快の意で使われることが多いが本来とは異なる。'},
+  {id:'k_h6',f:'kanji',lv:'hard',q:'「他山の石」の正しい使い方はどれか。',ch:['他人の誤りを自分の戒めとする','他人の成功を手本にする','無関係なこととして扱う','人を批判する'],a:0,ex:'よその山の粗悪な石でも自分の玉を磨くのに役立つ、という故事から。よい手本には使わない。'},
+  {id:'g_e1',f:'goi',lv:'easy',q:'「一石二鳥」の意味はどれか。',ch:['一つのことで二つの利益を得る','二つとも失う','二度手間になる','どちらも中途半端'],a:0,ex:'1つの石で2羽の鳥を落とす意味。似た意味に「一挙両得」。'},
+  {id:'g_e2',f:'goi',lv:'easy',q:'「五里霧中」の意味はどれか。',ch:['どうしてよいか見当がつかない','遠くまで見通せる','霧が深い天気','道に迷うこと'],a:0,ex:'深い霧の中にいるように、方針や見通しが立たないこと。「夢中」と書くのは誤り。'},
+  {id:'g_e3',f:'goi',lv:'easy',q:'「試行錯誤」の意味はどれか.',ch:['何度も試して失敗しながら方法を見つける','初めから正解を知っている','錯覚におちいる','試験に失敗する'],a:0,ex:'試みと失敗をくり返して解決に近づくこと。'},
+  {id:'g_e4',f:'goi',lv:'easy',q:'「臨機応変」の意味はどれか。',ch:['その場に応じて適切に対応する','決まりを厳しく守る','あらかじめ計画する','変化を嫌う'],a:0,ex:'状況の変化に合わせて柔軟に処置すること。'},
+  {id:'g_e5',f:'goi',lv:'easy',q:'「単刀直入」の意味はどれか。',ch:['前置きなしにいきなり本題に入る','遠回しに言う','一人で立ち向かう','短く話す'],a:0,ex:'1本の刀で敵陣に切り込む意味から。「短刀」と書くのは誤り。'},
+  {id:'g_e6',f:'goi',lv:'easy',q:'「異口同音」の意味はどれか。',ch:['多くの人が同じことを言う','違うことを言い合う','声をそろえて歌う','同じ人が違うことを言う'],a:0,ex:'口は違っても言うことは同じ、の意味。'},
+  {id:'g_e7',f:'goi',lv:'easy',q:'「言語道断」の意味はどれか。',ch:['もってのほかである','言葉が通じない','無口である','説明が長い'],a:0,ex:'言葉で言い表せないほどひどいこと。もとは仏教語で、真理は言葉では表せない意味だった。'},
+  {id:'g_e8',f:'goi',lv:'easy',q:'「馬の耳に念仏」と同じ意味のことわざはどれか。',ch:['猫に小判','猿も木から落ちる','三人寄れば文殊の知恵','急がば回れ'],a:0,ex:'価値がわからない相手には無意味であること。「豚に真珠」も同じ。'},
+  {id:'g_e9',f:'goi',lv:'easy',q:'「石橋をたたいて渡る」の意味はどれか。',ch:['非常に用心深い','せっかちである','危険をおかす','橋を壊す'],a:0,ex:'頑丈な石の橋でさえ確かめてから渡るほど慎重なこと。'},
+  {id:'g_e10',f:'goi',lv:'easy',q:'「二階から目薬」の意味はどれか。',ch:['遠回しで効き目がない','高いところが好き','目が悪い','便利な方法'],a:0,ex:'もどかしく、効果が上がらないことのたとえ。'},
+  {id:'g_e11',f:'goi',lv:'easy',q:'「情けは人の為ならず」に近い意味のことわざはどれか。',ch:['善は急げ','情けに報いあり','急がば回れ','沈黙は金'],a:1,ex:'人への親切がめぐって自分に返るという考え方。'},
+  {id:'g_e12',f:'goi',lv:'easy',q:'「棚から牡丹餅」の意味はどれか。',ch:['思いがけない幸運','努力の成果','失敗すること','危険なこと'],a:0,ex:'苦労せずに幸運を得ること。略して「たなぼた」。'},
+  {id:'g_e13',f:'goi',lv:'easy',q:'「油を売る」の意味はどれか。',ch:['むだ話をして仕事をなまける','商売をする','機械を整備する','人をだます'],a:0,ex:'江戸時代の髪油の行商人が客と長話をしたことに由来する。'},
+  {id:'g_e14',f:'goi',lv:'easy',q:'「気が置けない」の意味はどれか。',ch:['遠慮がいらず気楽である','油断できない','気味が悪い','忘れられない'],a:0,ex:'気を遣わなくてよい、の意味。「油断できない」と誤解されやすい代表例。'},
+  {id:'g_e15',f:'goi',lv:'easy',q:'「舌を巻く」の意味はどれか。',ch:['非常に感心する','秘密にする','うそをつく','早口で話す'],a:0,ex:'驚いて言葉が出ないほど感心すること。'},
+  {id:'g_e16',f:'goi',lv:'easy',q:'「気の置けない友人」の「気の置けない」は褒め言葉か。',ch:['褒め言葉である','非難の言葉である','どちらでもない','状況による'],a:0,ex:'遠慮のいらない親しい間柄という褒め言葉。誤用に注意。'},
+  {id:'g_s1',f:'goi',lv:'std',q:'「呉越同舟」の意味はどれか。',ch:['仲の悪い者どうしが同じ場に居合わせる','協力して事にあたる','船で旅をする','敵を打ち破る'],a:0,ex:'敵対する呉と越の人が同じ舟に乗る故事から。転じて協力する意味でも使われる。'},
+  {id:'g_s2',f:'goi',lv:'std',q:'「臥薪嘗胆」の意味はどれか。',ch:['目的のために苦しみに耐える','薪を集める','病気で寝込む','ぜいたくをする'],a:0,ex:'たきぎの上に寝て苦い胆をなめる故事から、復讐や目的達成のために苦労を重ねること。'},
+  {id:'g_s3',f:'goi',lv:'std',q:'「四面楚歌」の意味はどれか。',ch:['周囲がすべて敵で孤立している','歌を歌って励ます','四方から助けが来る','歌が上手なこと'],a:0,ex:'項羽が四方から楚の歌を聞いて味方の離反を悟った故事から。'},
+  {id:'g_s4',f:'goi',lv:'std',q:'「杞憂」の意味はどれか。',ch:['取り越し苦労','正当な心配','深い悲しみ','大きな喜び'],a:0,ex:'杞の国の人が天が落ちてこないかと心配した故事から、無用の心配。'},
+  {id:'g_s5',f:'goi',lv:'std',q:'「推敲」の由来として正しいものはどれか。',ch:['詩の字句を「推す」か「敲く」か悩んだ故事','文章を推薦する','敵を敲く','高く推す'],a:0,ex:'唐の詩人賈島が「僧は推す月下の門」か「敲く」かで迷った故事。文章を練り直す意味。'},
+  {id:'g_s6',f:'goi',lv:'std',q:'「矛盾」の由来はどれか。',ch:['どんな盾も突き通す矛と、どんな矛も防ぐ盾を売った商人の話','戦いの武器の名前','中国の地名','矛と盾を組み合わせた道具'],a:0,ex:'韓非子の故事。話のつじつまが合わないことを表す。'},
+  {id:'g_s7',f:'goi',lv:'std',q:'「蛇足」の意味はどれか。',ch:['よけいな付け足し','必要な補足','蛇の足','素早い動き'],a:0,ex:'蛇の絵に足を描き足して負けた故事から、不要なものを加えて台なしにすること。'},
+  {id:'g_s8',f:'goi',lv:'std',q:'「圧巻」の本来の意味はどれか.',ch:['全体の中で最も優れた部分','壮大な光景','圧倒されること','巻物を押さえる'],a:0,ex:'科挙で最も優秀な答案を他の答案の上に置いた（圧した）ことに由来する。'},
+  {id:'g_s9',f:'goi',lv:'std',q:'「枚挙にいとまがない」の意味はどれか。',ch:['数えきれないほど多い','数える時間がある','まったくない','めずらしい'],a:0,ex:'一つ一つ数え上げる暇がないほど多いこと。'},
+  {id:'g_s10',f:'goi',lv:'std',q:'「割愛する」の本来の意味はどれか。',ch:['惜しみながら省く','不要なので捨てる','分けて与える','愛情を注ぐ'],a:0,ex:'惜しいと思うものを手放す意味。単に「省略する」とは語感が異なる。'},
+  {id:'g_s11',f:'goi',lv:'std',q:'「敷居が高い」の本来の意味はどれか。',ch:['不義理をして訪ねにくい','高級すぎて入りにくい','段差が大きい','手続きが面倒'],a:0,ex:'相手に対して申し訳なさがあって行きにくいこと。高級で入りにくい意味は本来の用法ではない。'},
+  {id:'g_s12',f:'goi',lv:'std',q:'「檄を飛ばす」の本来の意味はどれか。',ch:['自分の主張を広く知らせて同意を求める','激励する','怒鳴りつける','手紙を送る'],a:0,ex:'檄とは考えを記した文書。励ます意味で使われることが多いが本来とは異なる。'},
+  {id:'g_h1',f:'goi',lv:'hard',q:'「捲土重来」の読みと意味の組み合わせはどれか。',ch:['けんどちょうらい・一度敗れた者が勢いを盛り返す','けんどじゅうらい・土に埋もれる','まきどちょうらい・重ねて来る','けんどちょうらい・土煙が舞う'],a:0,ex:'土煙を巻き上げる勢いで再び来る意味。「じゅうらい」とも読む。'},
+  {id:'g_h2',f:'goi',lv:'hard',q:'「呉越同舟」と「同床異夢」に共通することはどれか。',ch:['同じ場にいながら思いが一致しない状況を表す','協力して成功する','別々の場所にいる','敵を倒す'],a:0,ex:'どちらも表面上は一緒でも内面が異なる状況を指す。'},
+  {id:'g_h3',f:'goi',lv:'hard',q:'「換骨奪胎」の意味はどれか。',ch:['先人の作をもとに独自の作品を作る','骨を折って苦労する','体を鍛える','他人の作品を盗む'],a:0,ex:'骨を取り換え胎を奪う意味から、古人の詩文の発想を生かして新しく作ること。'},
+  {id:'g_h4',f:'goi',lv:'hard',q:'「琴瑟相和す」の意味はどれか。',ch:['夫婦の仲がむつまじい','音楽が上手である','争いが絶えない','友情が深い'],a:0,ex:'琴と瑟という2つの楽器が調和する意味から、夫婦仲がよいこと。'},
+  {id:'g_h5',f:'goi',lv:'hard',q:'「鼎の軽重を問う」の意味はどれか。',ch:['実力や資格を疑い問いただす','重さを量る','料理を作る','大切に扱う'],a:0,ex:'王権の象徴である鼎の重さを尋ねた故事から、権威者の実力を疑うこと。'},
+  {id:'g_h6',f:'goi',lv:'hard',q:'「烏合の衆」の意味はどれか。',ch:['規律のない寄せ集めの集団','よく訓練された軍隊','少人数の精鋭','鳥の群れ'],a:0,ex:'カラスの群れのように統制のない集まり。'},
+  {id:'b_e1',f:'bunpo',lv:'easy',q:'自立語で活用があり、言い切りがウ段で終わる品詞はどれか。',ch:['動詞','形容詞','形容動詞','名詞'],a:0,ex:'動詞。形容詞は「い」、形容動詞は「だ・です」で言い切る。'},
+  {id:'b_e2',f:'bunpo',lv:'easy',q:'「静かだ」の品詞はどれか。',ch:['形容動詞','形容詞','動詞','副詞'],a:0,ex:'形容動詞。言い切りが「だ」で終わる。'},
+  {id:'b_e3',f:'bunpo',lv:'easy',q:'「美しい」の品詞はどれか。',ch:['形容詞','形容動詞','副詞','連体詞'],a:0,ex:'形容詞。言い切りが「い」で終わる。'},
+  {id:'b_e4',f:'bunpo',lv:'easy',q:'活用がなく、体言だけを修飾する品詞はどれか。',ch:['連体詞','副詞','接続詞','感動詞'],a:0,ex:'連体詞。「この」「大きな」「あらゆる」など。副詞は主に用言を修飾する。'},
+  {id:'b_e5',f:'bunpo',lv:'easy',q:'「決して」「たぶん」のように、あとに決まった言い方を要求する副詞を何というか。',ch:['呼応（陳述）の副詞','状態の副詞','程度の副詞','時の副詞'],a:0,ex:'「決して〜ない」「たぶん〜だろう」のように受ける言い方が決まる。'},
+  {id:'b_e6',f:'bunpo',lv:'easy',q:'付属語で活用があるものはどれか。',ch:['助動詞','助詞','副詞','接続詞'],a:0,ex:'助動詞は付属語で活用あり、助詞は付属語で活用なし。'},
+  {id:'b_e7',f:'bunpo',lv:'easy',q:'「本を読む」の「を」の品詞はどれか。',ch:['助詞','助動詞','副詞','接続詞'],a:0,ex:'助詞。動作の対象を示す格助詞。'},
+  {id:'b_e8',f:'bunpo',lv:'easy',q:'動詞の活用の種類で、「する」だけが属するものはどれか。',ch:['サ行変格活用','カ行変格活用','上一段活用','五段活用'],a:0,ex:'サ変は「する」とその複合語のみ。カ変は「来る」のみ。'},
+  {id:'b_e9',f:'bunpo',lv:'easy',q:'「来る」の活用の種類はどれか。',ch:['カ行変格活用','サ行変格活用','五段活用','下一段活用'],a:0,ex:'カ行変格活用。「来る」1語のみ。'},
+  {id:'b_e10',f:'bunpo',lv:'easy',q:'「見る」の活用の種類はどれか。',ch:['上一段活用','下一段活用','五段活用','カ行変格活用'],a:0,ex:'「ない」を付けると「見ない」でイ段になるので上一段。'},
+  {id:'b_e11',f:'bunpo',lv:'easy',q:'「食べる」の活用の種類はどれか。',ch:['下一段活用','上一段活用','五段活用','サ行変格活用'],a:0,ex:'「食べない」でエ段になるので下一段。'},
+  {id:'b_e12',f:'bunpo',lv:'easy',q:'尊敬語にあたるものはどれか。',ch:['おっしゃる','申す','いたす','いただく'],a:0,ex:'おっしゃるは「言う」の尊敬語。申す・いたす・いただくは謙譲語。'},
+  {id:'b_e13',f:'bunpo',lv:'easy',q:'「食べる」の謙譲語はどれか。',ch:['いただく','召し上がる','お食べになる','食べられる'],a:0,ex:'いただく。召し上がるは尊敬語。'},
+  {id:'b_e14',f:'bunpo',lv:'easy',q:'「行く」の尊敬語はどれか。',ch:['いらっしゃる','参る','伺う','おる'],a:0,ex:'いらっしゃる。参る・伺うは謙譲語。'},
+  {id:'b_e15',f:'bunpo',lv:'easy',q:'「先生が申された」という表現の問題点はどれか。',ch:['謙譲語を尊敬すべき相手に使っている','二重敬語である','丁寧語が足りない','問題はない'],a:0,ex:'「申す」は謙譲語。正しくは「おっしゃった」。'},
+  {id:'b_e16',f:'bunpo',lv:'easy',q:'「お客様がお見えになられる」の問題点はどれか。',ch:['二重敬語である','謙譲語である','丁寧語である','問題はない'],a:0,ex:'「お見えになる」で既に尊敬語なので「られる」は不要。'},
+  {id:'b_s1',f:'bunpo',lv:'std',q:'「られる」の意味が「可能」であるものはどれか。',ch:['この水は飲める','先生が来られる','昔が思い出される','母に怒られる'],a:0,ex:'可能。他は順に尊敬・自発・受け身。'},
+  {id:'b_s2',f:'bunpo',lv:'std',q:'「れる・られる」の4つの意味に含まれないものはどれか。',ch:['断定','受け身','可能','尊敬'],a:0,ex:'受け身・可能・自発・尊敬の4つ。断定は「だ」「である」。'},
+  {id:'b_s3',f:'bunpo',lv:'std',q:'「ようだ」が「比喩（たとえ）」の意味で使われているものはどれか。',ch:['雪のように白い','雨が降るようだ','彼のような人になりたい','熱があるようだ'],a:0,ex:'比喩。2番目と4番目は推定、3番目は例示。'},
+  {id:'b_s4',f:'bunpo',lv:'std',q:'「ない」が形容詞であるものはどれか。',ch:['お金がない','行かない','知らない','見えない'],a:0,ex:'「ない」の直前に「は」を入れて意味が通れば形容詞。他は打ち消しの助動詞。'},
+  {id:'b_s5',f:'bunpo',lv:'std',q:'「の」が主語を示しているものはどれか。',ch:['私の書いた手紙','私の本','鉄の門','走るのが速い'],a:0,ex:'「私が書いた」と言い換えられる。2番目は所有、3番目は材料、4番目は体言の代用。'},
+  {id:'b_s6',f:'bunpo',lv:'std',q:'「が」が逆接の接続助詞であるものはどれか。',ch:['雨が降ったが出かけた','花が咲く','水が飲みたい','彼が来た'],a:0,ex:'逆接。他は主語や対象を示す格助詞。'},
+  {id:'b_s7',f:'bunpo',lv:'std',q:'単文・複文・重文のうち、主語述語の関係が対等に2つ並ぶものはどれか。',ch:['重文','複文','単文','いずれでもない'],a:0,ex:'重文は「兄は走り、弟は歩いた」のように対等に並ぶ。複文は一方が他方に従属する。'},
+  {id:'b_s8',f:'bunpo',lv:'std',q:'「大きな」の品詞はどれか。',ch:['連体詞','形容詞','形容動詞','副詞'],a:0,ex:'連体詞。「大きい」は形容詞だが「大きな」は活用しないので連体詞。'},
+  {id:'b_s9',f:'bunpo',lv:'std',q:'「そうだ」が伝聞の意味であるものはどれか。',ch:['雨が降るそうだ','雨が降りそうだ','おいしそうだ','倒れそうだ'],a:0,ex:'伝聞は終止形に付く。様態は連用形や語幹に付く。'},
+  {id:'b_s10',f:'bunpo',lv:'std',q:'「先生に本をお貸しする」の敬語の種類はどれか。',ch:['謙譲語','尊敬語','丁寧語','美化語'],a:0,ex:'自分の動作をへりくだって相手を高める謙譲語。'},
+  {id:'b_s11',f:'bunpo',lv:'std',q:'「拝見する」を使うのが適切な場面はどれか。',ch:['自分が相手の資料を見るとき','相手が自分の資料を見るとき','第三者が見るとき','どんな場合でもよい'],a:0,ex:'拝見は「見る」の謙譲語なので、自分の動作に使う。'},
+  {id:'b_s12',f:'bunpo',lv:'std',q:'敬語の5分類に含まれないものはどれか。',ch:['命令語','尊敬語','謙譲語','美化語'],a:0,ex:'尊敬語・謙譲語I・謙譲語II（丁重語）・丁寧語・美化語の5分類。'},
+  {id:'b_h1',f:'bunpo',lv:'hard',q:'「行かれる」が尊敬の意味になる根拠として適切なものはどれか。',ch:['主語が敬意を払うべき人物である','動詞が可能動詞である','文末が丁寧である','受け身の対象がある'],a:0,ex:'れる・られるの意味は文脈と主語で判断する。可能なら「行ける」と言い換えられる。'},
+  {id:'b_h2',f:'bunpo',lv:'hard',q:'「静かな海」の「静かな」を単語に分けるとどうなるか.',ch:['形容動詞「静かだ」の連体形で1単語','形容詞＋助動詞','名詞＋助詞','副詞＋助動詞'],a:0,ex:'形容動詞は語幹と活用語尾を合わせて1単語として扱う。'},
+  {id:'b_h3',f:'bunpo',lv:'hard',q:'「読ませられる」に含まれる助動詞の組み合わせはどれか。',ch:['使役＋受け身','受け身＋可能','使役＋尊敬','自発＋可能'],a:0,ex:'「せる」（使役）＋「られる」（受け身）。読むことを強いられる意味。'},
+  {id:'b_h4',f:'bunpo',lv:'hard',q:'「まで」が副助詞として程度を表しているものはどれか。',ch:['子どもまで知っている','駅まで歩く','三時まで待つ','ここまで来た'],a:0,ex:'意外な範囲を示す副助詞。他は到達点を示す格助詞的な用法。'},
+  {id:'b_h5',f:'bunpo',lv:'hard',q:'「先生がおっしゃられた」の問題点はどれか。',ch:['二重敬語である','謙譲語の誤用である','丁寧語が不足している','問題はない'],a:0,ex:'「おっしゃる」で既に尊敬語。「られる」を重ねると過剰。'},
+  {id:'b_h6',f:'bunpo',lv:'hard',q:'「弊社の田中が伺います」の敬語の使い方はどれか。',ch:['自社の人間をへりくだらせており正しい','田中に敬意を払うべきなので誤り','尊敬語を使うべき','丁寧語が必要'],a:0,ex:'社外の相手に対しては、自社の人間は身内として謙譲表現を使う。'},
+  {id:'t_e1',f:'koten',lv:'easy',q:'歴史的仮名遣い「けふ」を現代仮名遣いに直すとどうなるか。',ch:['きょう','けう','けふ','こう'],a:0,ex:'「eu」は「よう」に変わる。けふ→きょう（今日）。'},
+  {id:'t_e2',f:'koten',lv:'easy',q:'「ゐる」を現代仮名遣いに直すとどうなるか。',ch:['いる','ゑる','うる','ゆる'],a:0,ex:'「ゐ」は「い」、「ゑ」は「え」に直す。'},
+  {id:'t_e3',f:'koten',lv:'easy',q:'「あはれ」を現代仮名遣いに直すとどうなるか。',ch:['あわれ','あはれ','あわら','あはら'],a:0,ex:'語中・語尾のハ行は「わ・い・う・え・お」に直す。'},
+  {id:'t_e4',f:'koten',lv:'easy',q:'古文の「あはれなり」の意味として適切なものはどれか。',ch:['しみじみと心を動かされる','かわいそうだ','おもしろい','おそろしい'],a:0,ex:'現代語の「あわれ」より広く、感動全般を表す。'},
+  {id:'t_e5',f:'koten',lv:'easy',q:'古文の「をかし」の意味として適切なものはどれか。',ch:['趣がある・興味深い','こっけいだ','おかしい','変である'],a:0,ex:'知的な明るい興趣を表す。『枕草子』の基調をなす語。'},
+  {id:'t_e6',f:'koten',lv:'easy',q:'古文の「うつくし」の意味として適切なものはどれか。',ch:['かわいらしい','美しい','立派だ','正しい'],a:0,ex:'小さいものへのいとおしさを表す。現代語の「美しい」とは異なる。'},
+  {id:'t_e7',f:'koten',lv:'easy',q:'古文の「やがて」の意味として適切なものはどれか。',ch:['すぐに','そのうち','ゆっくり','ついに'],a:0,ex:'古文では「すぐに・そのまま」の意味。現代語の「まもなく」とは異なる。'},
+  {id:'t_e8',f:'koten',lv:'easy',q:'古文の「ありがたし」の意味として適切なものはどれか。',ch:['めったにない','感謝している','ありふれている','つらい'],a:0,ex:'「有り難し」で、存在しにくい＝めずらしいの意味。'},
+  {id:'t_e9',f:'koten',lv:'easy',q:'『枕草子』の作者はだれか。',ch:['清少納言','紫式部','兼好法師','鴨長明'],a:0,ex:'清少納言。随筆で、冒頭は「春はあけぼの」。'},
+  {id:'t_e10',f:'koten',lv:'easy',q:'『徒然草』の作者はだれか。',ch:['兼好法師','鴨長明','清少納言','紀貫之'],a:0,ex:'兼好法師。冒頭は「つれづれなるままに」。'},
+  {id:'t_e11',f:'koten',lv:'easy',q:'『方丈記』の冒頭「ゆく河の流れは絶えずして」の作者はだれか。',ch:['鴨長明','兼好法師','清少納言','松尾芭蕉'],a:0,ex:'鴨長明。無常観を語る随筆。'},
+  {id:'t_e12',f:'koten',lv:'easy',q:'『竹取物語』の説明として正しいものはどれか。',ch:['現存する最古の物語とされる','平安末期の軍記物語','江戸時代の随筆','和歌集'],a:0,ex:'かぐや姫の物語。『源氏物語』で「物語の出で来はじめの祖」と記される。'},
+  {id:'t_e13',f:'koten',lv:'easy',q:'『平家物語』の冒頭にある「諸行無常」が表す考え方はどれか。',ch:['すべては移り変わり同じ状態は続かない','すべては永遠である','人は平等である','努力は報われる'],a:0,ex:'仏教の無常観。「祇園精舎の鐘の声」で始まる。'},
+  {id:'t_e14',f:'koten',lv:'easy',q:'俳句の季語「五月雨」が表す季節はどれか。',ch:['夏','春','秋','冬'],a:0,ex:'旧暦五月の長雨で、現在の梅雨にあたる。俳句では夏の季語。'},
+  {id:'t_s1',f:'koten',lv:'std',q:'係り結びで「ぞ・なむ・こそ」のうち、結びが已然形になるものはどれか。',ch:['こそ','ぞ','なむ','や'],a:0,ex:'こそは已然形で結ぶ。ぞ・なむ・や・かは連体形で結ぶ。'},
+  {id:'t_s2',f:'koten',lv:'std',q:'係り結びの働きとして正しいものはどれか。',ch:['強調や疑問を表す','敬意を表す','時制を示す','主語を示す'],a:0,ex:'ぞ・なむ・こそは強調、や・かは疑問や反語を表す。'},
+  {id:'t_s3',f:'koten',lv:'std',q:'古文の「いと」の意味はどれか。',ch:['たいへん・非常に','少し','まったく〜ない','ときどき'],a:0,ex:'程度を強める副詞。「いとをかし」で「たいへん趣がある」。'},
+  {id:'t_s4',f:'koten',lv:'std',q:'古文の「つとめて」の意味はどれか。',ch:['早朝','努力して','ついに','いつも'],a:0,ex:'早朝、または翌朝の意味。『枕草子』の「冬はつとめて」が有名。'},
+  {id:'t_s5',f:'koten',lv:'std',q:'古文の「おどろく」の意味として適切なものはどれか。',ch:['目を覚ます','びっくりする','喜ぶ','怒る'],a:0,ex:'はっと気づく、目覚めるの意味が中心。'},
+  {id:'t_s6',f:'koten',lv:'std',q:'古文の「かなし」の意味として適切なものはどれか。',ch:['いとしい','悲しい','つらい','さびしい'],a:0,ex:'「愛し」と書き、いとおしいの意味。悲しいの意味もあるが文脈で判断する。'},
+  {id:'t_s7',f:'koten',lv:'std',q:'和歌の「枕詞」の説明として正しいものはどれか。',ch:['特定の語を導く5音の決まり文句','季節を表す語','対句の一種','作者の名'],a:0,ex:'「ひさかたの」→光、「あしひきの」→山など。それ自体は訳さないことが多い。'},
+  {id:'t_s8',f:'koten',lv:'std',q:'『万葉集』の特徴として正しいものはどれか。',ch:['天皇から農民まで幅広い層の歌を収める','貴族の歌のみ','江戸時代の歌集','漢詩集'],a:0,ex:'現存最古の歌集。防人の歌や東歌も含む。'},
+  {id:'t_s9',f:'koten',lv:'std',q:'『古今和歌集』の仮名序を書いた人物はだれか。',ch:['紀貫之','柿本人麻呂','在原業平','藤原定家'],a:0,ex:'紀貫之。「やまと歌は、人の心を種として」で始まる。'},
+  {id:'t_s10',f:'koten',lv:'std',q:'漢文の返り点「レ点」の働きはどれか。',ch:['すぐ上の一字に返って読む','二字以上返る','句読を示す','送り仮名を示す'],a:0,ex:'レ点は直前の一字に返る。一二点は二字以上離れた語に返る。'},
+  {id:'t_s11',f:'koten',lv:'std',q:'漢文「不入虎穴、不得虎子」の書き下しとして正しいものはどれか。',ch:['虎穴に入らずんば虎子を得ず','虎穴に入りて虎子を得','虎子を得て虎穴に入る','虎穴に入らば虎子を得'],a:0,ex:'危険を冒さなければ大きな成果は得られないという意味。'},
+  {id:'t_s12',f:'koten',lv:'std',q:'「温故知新」のもとになった『論語』の一節の意味はどれか。',ch:['古いことを学び直して新しい知識を得る','新しいことだけを学ぶ','古い友人と会う','歴史を記録する'],a:0,ex:'「故きを温ねて新しきを知る」。師たるべき条件として語られる。'},
+  {id:'t_h1',f:'koten',lv:'hard',q:'「思ふ」の已然形はどれか。',ch:['思へ','思は','思ひ','思ふ'],a:0,ex:'四段活用。未然「は」連用「ひ」終止「ふ」連体「ふ」已然「へ」命令「へ」。'},
+  {id:'t_h2',f:'koten',lv:'hard',q:'助動詞「けり」の主な意味の組み合わせはどれか。',ch:['過去・詠嘆','推量・意志','断定・存在','打消・禁止'],a:0,ex:'過去の伝聞回想と、和歌などでの詠嘆。「なりけり」で気づきを表す。'},
+  {id:'t_h3',f:'koten',lv:'hard',q:'助動詞「む」の意味に含まれないものはどれか。',ch:['過去','推量','意志','勧誘'],a:0,ex:'推量・意志・勧誘・仮定・婉曲。過去は「き」「けり」。'},
+  {id:'t_h4',f:'koten',lv:'hard',q:'「花こそ咲きけれ」で「けれ」が已然形になっている理由はどれか。',ch:['係助詞「こそ」があるから','疑問文だから','否定文だから','命令だから'],a:0,ex:'係り結びの法則。こそ→已然形。'},
+  {id:'t_h5',f:'koten',lv:'hard',q:'「なり」が断定であるものはどれか。',ch:['これは花なり','鐘の音すなり','雨降るなり','人来なり'],a:0,ex:'体言に付く「なり」は断定。終止形に付くと伝聞推定になる。'},
+  {id:'t_h6',f:'koten',lv:'hard',q:'漢文「百聞不如一見」の意味はどれか。',ch:['何度も聞くより一度見るほうがよくわかる','百回聞けば理解できる','見るだけでは足りない','聞くことが大切だ'],a:0,ex:'百聞は一見に如かず。実際に見ることの大切さを説く。'},
+  {id:'t_h7',f:'koten',lv:'hard',q:'漢文の「置き字」の説明として正しいものはどれか。',ch:['書き下し文では読まない字','必ず読む字','送り仮名','返り点の一種'],a:0,ex:'而・於・焉など。訓読の際には読まず、関係を示す働きをもつ。'},
+  {id:'k_e21',f:'kanji',lv:'easy',q:'「滞る」の読みはどれか。',ch:['とどこおる','おちいる','さえぎる','とどまる'],a:0,ex:'とどこおる。物事が順調に進まないこと。「滞納」「停滞」の滞。'},
+  {id:'k_e22',f:'kanji',lv:'easy',q:'「遮る」の読みはどれか。',ch:['さえぎる','へだてる','さまたげる','とざす'],a:0,ex:'さえぎる。「遮断」の遮。'},
+  {id:'k_e23',f:'kanji',lv:'easy',q:'「憤る」の読みはどれか。',ch:['いきどおる','あなどる','うながす','いつわる'],a:0,ex:'いきどおる。激しく怒ること。「憤慨」「義憤」の憤。'},
+  {id:'k_e24',f:'kanji',lv:'easy',q:'「侮る」の読みはどれか。',ch:['あなどる','あやつる','あざける','あがめる'],a:0,ex:'あなどる。相手を軽く見ること。「侮辱」の侮。'},
+  {id:'k_e25',f:'kanji',lv:'easy',q:'「顧みる」の読みはどれか。',ch:['かえりみる','こころみる','たしなみる','ふりみる'],a:0,ex:'かえりみる。振り返る、また気にかけること。「顧客」「回顧」の顧。'},
+  {id:'k_e26',f:'kanji',lv:'easy',q:'「促す」の読みはどれか。',ch:['うながす','はげます','もよおす','ほどこす'],a:0,ex:'うながす。「促進」「催促」の促。'},
+  {id:'k_e27',f:'kanji',lv:'easy',q:'「担う」の読みはどれか。',ch:['になう','したがう','やしなう','うるおう'],a:0,ex:'になう。肩にかつぐ意味から、責任を引き受けること。'},
+  {id:'k_e28',f:'kanji',lv:'easy',q:'「賄う」の読みはどれか。',ch:['まかなう','あがなう','ともなう','おぎなう'],a:0,ex:'まかなう。費用や食事を用意すること。「賄賂」の賄。'},
+  {id:'k_e29',f:'kanji',lv:'easy',q:'「巧み」の読みはどれか。',ch:['たくみ','たかみ','こうみ','うまみ'],a:0,ex:'たくみ。「巧妙」「技巧」の巧。'},
+  {id:'k_e30',f:'kanji',lv:'easy',q:'「妨げる」の読みはどれか。',ch:['さまたげる','さえぎる','ゆがめる','とがめる'],a:0,ex:'さまたげる。「妨害」の妨。'},
+  {id:'k_e31',f:'kanji',lv:'easy',q:'「かんしょう」で「他人のことに立ち入る」意味の漢字はどれか。',ch:['干渉','鑑賞','観賞','感傷'],a:0,ex:'干渉。鑑賞は芸術を味わう、観賞は見て楽しむ、感傷は物事に心を動かされやすいこと。'},
+  {id:'k_e32',f:'kanji',lv:'easy',q:'「こうせい」で「不当な扱いをせず公平である」意味の漢字はどれか。',ch:['公正','構成','厚生','更生'],a:0,ex:'公正。構成は組み立て、厚生は生活を豊かにすること、更生は立ち直ること。'},
+  {id:'k_e33',f:'kanji',lv:'easy',q:'「しゅうしゅう」で「混乱をおさめる」意味の漢字はどれか。',ch:['収拾','収集','収襲','習集'],a:0,ex:'収拾。切手などを集めるのは収集。「事態を収拾する」。'},
+  {id:'k_e34',f:'kanji',lv:'easy',q:'「たいしょう」で「働きかける相手」を表す漢字はどれか。',ch:['対象','対照','対称','大将'],a:0,ex:'対象。「調査の対象」のように使う。'},
+  {id:'k_e35',f:'kanji',lv:'easy',q:'「そうぞう」で「新しく作り出す」意味の漢字はどれか。',ch:['創造','想像','想造','創想'],a:0,ex:'創造。想像は心に思い描くこと。'},
+  {id:'k_e36',f:'kanji',lv:'easy',q:'「はかる」で「計画してくわだてる」意味の漢字はどれか。',ch:['図る','計る','測る','量る'],a:0,ex:'図る。「解決を図る」のように使う。'},
+  {id:'k_e37',f:'kanji',lv:'easy',q:'「あらわす」で「本や作品を書いて世に出す」意味の漢字はどれか。',ch:['著す','表す','現す','顕す'],a:0,ex:'著す。表すは表現する、現すは姿を見せる。'},
+  {id:'k_e38',f:'kanji',lv:'easy',q:'「つとめる」で「役目を引き受ける」意味の漢字はどれか。',ch:['務める','努める','勤める','勉める'],a:0,ex:'務める。努めるは努力する、勤めるは勤務する。'},
+  {id:'k_e39',f:'kanji',lv:'easy',q:'「不安」と同じ成り立ちの熟語はどれか。',ch:['未知','岩石','日照','読書'],a:0,ex:'どちらも上の字が下の字を打ち消す構成。'},
+  {id:'k_e40',f:'kanji',lv:'easy',q:'「私立」と「市立」を区別して読むときの言い方はどれか。',ch:['わたくしりつ と いちりつ','しりつ と しりつ','してき と してき','どちらも同じ'],a:0,ex:'同音で紛らわしいため、話し言葉では「わたくしりつ」「いちりつ」と区別する。'},
+  {id:'k_s13',f:'kanji',lv:'std',q:'「早急」の読みとして一般的なものはどれか。',ch:['さっきゅう','そうきゅう','はやきゅう','そうごん'],a:0,ex:'本来は「さっきゅう」。「そうきゅう」も広く使われ、辞書に併記されるようになった。'},
+  {id:'k_s14',f:'kanji',lv:'std',q:'「間髪を入れず」の「間髪」の本来の読みはどれか。',ch:['かん、はつ','かんぱつ','まがみ','あいだかみ'],a:0,ex:'本来は「かん、はつをいれず」と区切る。髪の毛一本も入る隙がない意味。'},
+  {id:'k_s15',f:'kanji',lv:'std',q:'「言質」の読みはどれか。',ch:['げんち','げんしつ','ことしつ','げんじち'],a:0,ex:'げんち。あとで証拠となる言葉。「言質を取る」。'},
+  {id:'k_s16',f:'kanji',lv:'std',q:'「出納」の読みはどれか。',ch:['すいとう','しゅつのう','でいれ','しゅつな'],a:0,ex:'すいとう。金銭の出し入れ。「出納帳」。'},
+  {id:'k_s17',f:'kanji',lv:'std',q:'「所謂」の読みはどれか。',ch:['いわゆる','しょい','ところい','しょせん'],a:0,ex:'いわゆる。世間で言われているところの、の意味。'},
+  {id:'k_s18',f:'kanji',lv:'std',q:'「凡例」の読みはどれか。',ch:['はんれい','ぼんれい','ばんれい','おおよそれい'],a:0,ex:'はんれい。書物のはじめに置く使い方の説明。'},
+  {id:'k_s19',f:'kanji',lv:'std',q:'「ついきゅう」で「学問的に深く調べる」意味の漢字はどれか。',ch:['追究','追求','追及','追給'],a:0,ex:'追究。真理などをどこまでも明らかにしようとすること。'},
+  {id:'k_s20',f:'kanji',lv:'std',q:'「かんしょう」で「芸術作品を味わう」意味の漢字はどれか。',ch:['鑑賞','観賞','干渉','感傷'],a:0,ex:'鑑賞は絵画や音楽など、観賞は花や風景など見て楽しむもの。'},
+  {id:'k_s21',f:'kanji',lv:'std',q:'「ほしょう」で「地位や権利が損なわれないよう守る」意味の漢字はどれか.',ch:['保障','補償','保証','歩哨'],a:0,ex:'保障。「社会保障」「安全保障」。'},
+  {id:'k_s22',f:'kanji',lv:'std',q:'「うつ」で「敵を攻める」意味の漢字はどれか。',ch:['討つ','打つ','撃つ','拍つ'],a:0,ex:'討つ。撃つは銃などで撃つ、打つは物をたたく。'},
+  {id:'k_s23',f:'kanji',lv:'std',q:'「おかす」で「危険な状況に身をさらす」意味の漢字はどれか。',ch:['冒す','犯す','侵す','侵犯す'],a:0,ex:'冒す。「危険を冒す」。犯すは罪、侵すは領土や権利。'},
+  {id:'k_s24',f:'kanji',lv:'std',q:'「たえる」で「その資格や価値がある」意味の漢字はどれか。',ch:['堪える','耐える','絶える','断える'],a:0,ex:'堪える。「鑑賞に堪える」。耐えるは苦痛をこらえる。'},
+  {id:'k_h7',f:'kanji',lv:'hard',q:'「気の毒」の語源として正しいものはどれか。',ch:['見ている自分の気にとって毒になるほど痛ましい','毒を盛られたような気分','気が滅入る毒','病気の一種'],a:0,ex:'相手の不幸が自分の心にとって毒になるほど、という感覚から生まれた語。'},
+  {id:'k_h8',f:'kanji',lv:'hard',q:'「敷居が高い」を「高級すぎて入りにくい」の意味で使うことについて、辞書の扱いはどうなっているか。',ch:['本来の意味とは異なる用法として説明されることが多い','本来の意味である','誤りとして完全に否定されている','記載がない'],a:0,ex:'本来は不義理があって行きにくいこと。近年の用法として併記する辞書も増えている。'},
+  {id:'k_h9',f:'kanji',lv:'hard',q:'「すべからく」の正しい使い方はどれか。',ch:['学生はすべからく学ぶべし','参加者はすべからく全員','すべからく問題がある','すべからく終わった'],a:0,ex:'「すべからく〜べし」で「ぜひとも〜すべきだ」。「すべて」の意味ではない。'},
+  {id:'k_h10',f:'kanji',lv:'hard',q:'「潮時」の本来の意味はどれか。',ch:['物事を行うのにちょうどよい時期','物事の終わりどき','手遅れの時','危険な時'],a:0,ex:'漁に出る好機を指した語。「引き際」の意味で使われることが多いが本来は好機。'},
+  {id:'k_h11',f:'kanji',lv:'hard',q:'「奇特」の本来の意味はどれか。',ch:['行いが感心なようす','風変わりなようす','奇妙なようす','特別扱い'],a:0,ex:'珍しく優れている、感心だという意味。「変わり者」の意味は本来の用法ではない。'},
+  {id:'k_h12',f:'kanji',lv:'hard',q:'「浮足立つ」の本来の意味はどれか。',ch:['不安で逃げ腰になる','うきうきする','はしゃぐ','準備が整う'],a:0,ex:'かかとが地につかず逃げ出しそうな状態。喜んでそわそわする意味は本来と異なる。'},
+  {id:'g_e17',f:'goi',lv:'easy',q:'「起承転結」の「転」が果たす役割はどれか。',ch:['話の流れを大きく変える','話を始める','前を受けて続ける','まとめる'],a:0,ex:'漢詩の構成に由来する。転で視点を変え、結でまとめる。'},
+  {id:'g_e18',f:'goi',lv:'easy',q:'「傍若無人」の意味はどれか。',ch:['人を気にせず勝手にふるまう','だれもいない','人助けをする','静かにしている'],a:0,ex:'そばに人がいないかのようにふるまう意味。'},
+  {id:'g_e19',f:'goi',lv:'easy',q:'「本末転倒」の意味はどれか。',ch:['大事なことと些細なことが逆になる','最初から間違える','途中で転ぶ','順序を守る'],a:0,ex:'根本と枝葉を取り違えること。'},
+  {id:'g_e20',f:'goi',lv:'easy',q:'「以心伝心」の意味はどれか。',ch:['言葉にしなくても心が通じる','手紙で伝える','命令が伝わる','うわさが広まる'],a:0,ex:'もとは仏教語で、悟りを言葉によらず伝えること。'},
+  {id:'g_e21',f:'goi',lv:'easy',q:'「日進月歩」の意味はどれか。',ch:['絶えず進歩し続ける','毎日歩く','ゆっくり進む','後戻りする'],a:0,ex:'日ごと月ごとに進歩すること。技術の進歩によく使う。'},
+  {id:'g_e22',f:'goi',lv:'easy',q:'「順風満帆」の読みと意味はどれか。',ch:['じゅんぷうまんぱん・物事が順調に進む','じゅんぷうまんぽ・帆を張る','じゅんぷうまんぱん・風が強い','じゅんぷうまんはん・船が進む'],a:0,ex:'追い風を受けて帆いっぱいに進むようす。「まんぽ」と読むのは誤り。'},
+  {id:'g_e23',f:'goi',lv:'easy',q:'「疑心暗鬼」の意味はどれか。',ch:['疑い出すと何でも怪しく見える','鬼を恐れる','暗い場所が怖い','信じやすい'],a:0,ex:'「疑心暗鬼を生ず」から。疑う心が実在しない鬼まで見せる。'},
+  {id:'g_e24',f:'goi',lv:'easy',q:'「大同小異」の意味はどれか。',ch:['細かい違いはあるがほぼ同じ','まったく違う','完全に同じ','大きく異なる'],a:0,ex:'大部分は同じで小さな差があるだけ。'},
+  {id:'g_e25',f:'goi',lv:'easy',q:'「猿も木から落ちる」と同じ意味のことわざはどれか。',ch:['弘法にも筆の誤り','石の上にも三年','急がば回れ','猫に小判'],a:0,ex:'名人でも失敗することがある。「河童の川流れ」も同義。'},
+  {id:'g_e26',f:'goi',lv:'easy',q:'「取り付く島もない」の意味はどれか。',ch:['相手にされずどうしようもない','島が見えない','手がかりがある','親切にされる'],a:0,ex:'頼るきっかけがない状態。「取り付く暇もない」は誤り。'},
+  {id:'g_e27',f:'goi',lv:'easy',q:'「他人の空似」の意味はどれか。',ch:['血縁がないのに顔が似ている','他人のふりをする','空を見上げる','よく似た性格'],a:0,ex:'まったく関係がないのに似ていること。'},
+  {id:'g_e28',f:'goi',lv:'easy',q:'「濡れ手で粟」の意味はどれか。',ch:['苦労せずに大きな利益を得る','手が濡れる','失敗する','努力が実る'],a:0,ex:'濡れた手で粟をつかむと粒がたくさんつくことから。'},
+  {id:'g_e29',f:'goi',lv:'easy',q:'「立つ鳥跡を濁さず」の意味はどれか。',ch:['去るときはきれいに始末する','急いで飛び立つ','水を汚す','後始末を人に任せる'],a:0,ex:'退くときは見苦しくないようにするべきという教え。'},
+  {id:'g_e30',f:'goi',lv:'easy',q:'「鶴の一声」の意味はどれか。',ch:['権威ある人の一言で決まる','美しい声','小さな声','鳥の鳴き声'],a:0,ex:'多くの議論を一言で決着させる、有力者の発言。'},
+  {id:'g_e31',f:'goi',lv:'easy',q:'「木で鼻をくくる」の意味はどれか。',ch:['そっけない態度をとる','鼻をつまむ','木を削る','親切にする'],a:0,ex:'愛想のない冷たい応対のこと。'},
+  {id:'g_e32',f:'goi',lv:'easy',q:'「板につく」の意味はどれか。',ch:['経験を積んでその立場が似合ってくる','板を張る','行き詰まる','固くなる'],a:0,ex:'役者が舞台（板）に慣れて演技がしっくりくることから。'},
+  {id:'g_s13',f:'goi',lv:'std',q:'「切磋琢磨」の意味はどれか。',ch:['仲間どうしで励まし高め合う','一人で努力する','競争して争う','技術を磨く道具'],a:0,ex:'骨や玉を切り磨く意味から、学問や人格を互いに磨くこと。'},
+  {id:'g_s14',f:'goi',lv:'std',q:'「因果応報」の意味はどれか。',ch:['行いに応じた結果が返ってくる','原因が不明である','偶然の結果','報酬がある'],a:0,ex:'仏教語。善悪の行為には必ずそれに応じた結果が伴う。'},
+  {id:'g_s15',f:'goi',lv:'std',q:'「羊頭狗肉」の意味はどれか。',ch:['見かけと中身が伴わない','羊と犬を売る','高級な肉','大きな看板'],a:0,ex:'羊の頭を看板に掲げて犬の肉を売る意味から。'},
+  {id:'g_s16',f:'goi',lv:'std',q:'「画竜点睛」の意味はどれか。',ch:['最後の仕上げで全体が生きる','絵を描く','無駄な手を加える','竜を退治する'],a:0,ex:'竜に瞳を描き入れたら飛び去った故事から。欠けている場合は「画竜点睛を欠く」。'},
+  {id:'g_s17',f:'goi',lv:'std',q:'「五十歩百歩」の由来となった書物はどれか。',ch:['孟子','論語','史記','韓非子'],a:0,ex:'『孟子』。戦場で五十歩逃げた者が百歩逃げた者を笑う話。'},
+  {id:'g_s18',f:'goi',lv:'std',q:'「塞翁が馬」の意味はどれか。',ch:['幸不幸は予測できない','馬が逃げる','老人の知恵','幸運が続く'],a:0,ex:'『淮南子』の故事。「人間万事塞翁が馬」として知られる。'},
+  {id:'g_s19',f:'goi',lv:'std',q:'「漁夫の利」の意味はどれか。',ch:['争っている間に第三者が利益を得る','漁で儲ける','協力して得る','互いに損をする'],a:0,ex:'シギとハマグリが争う間に漁師が両方を捕らえた故事から。'},
+  {id:'g_s20',f:'goi',lv:'std',q:'「朝三暮四」の意味はどれか。',ch:['目先の違いにとらわれて実質が同じことに気づかない','朝と夜で変わる','四回に分ける','計画を立てる'],a:0,ex:'サルにトチの実を朝3つ夜4つと言うと怒り、朝4つ夜3つと言うと喜んだ故事。'},
+  {id:'g_s21',f:'goi',lv:'std',q:'「白眉」の意味はどれか。',ch:['同類の中で最も優れたもの','白い眉毛','年長者','珍しいもの'],a:0,ex:'蜀の馬氏5兄弟のうち、眉に白毛のある者が最も優秀だった故事から。'},
+  {id:'g_s22',f:'goi',lv:'std',q:'「登竜門」の意味はどれか。',ch:['出世や成功への関門','竜が登る門','神社の門','難しい試験'],a:0,ex:'黄河の急流を登った鯉が竜になるという伝説から。'},
+  {id:'g_s23',f:'goi',lv:'std',q:'「琴線に触れる」の本来の意味はどれか。',ch:['心の奥深くに感動する','怒りを買う','秘密に触れる','弦を鳴らす'],a:0,ex:'感動を呼び起こすこと。「逆鱗に触れる」と混同しやすい。'},
+  {id:'g_s24',f:'goi',lv:'std',q:'「逆鱗に触れる」の意味はどれか。',ch:['目上の人の激しい怒りを買う','深く感動させる','うろこをはがす','親しくなる'],a:0,ex:'竜のあごの下の逆さのうろこに触れると殺されるという伝説から。'},
+  {id:'g_s25',f:'goi',lv:'std',q:'「役不足」と「力不足」の使い分けとして正しいものはどれか。',ch:['謙遜するときは力不足を使う','どちらも同じ','謙遜には役不足を使う','どちらも謙遜には使わない'],a:0,ex:'役不足は役目が軽すぎること。自分を低く言うときは力不足。'},
+  {id:'g_s26',f:'goi',lv:'std',q:'「さわり」の本来の意味はどれか。',ch:['話や曲の最も聞かせどころ','冒頭の部分','触れる部分','終わりの部分'],a:0,ex:'義太夫節で最も聞かせる箇所を指した語。「冒頭」の意味は本来と異なる。'},
+  {id:'g_h7',f:'goi',lv:'hard',q:'「泣いて馬謖を斬る」の意味はどれか。',ch:['規律を守るため私情を捨てて処分する','悲しんで泣く','人を許す','戦いに敗れる'],a:0,ex:'諸葛亮が愛弟子の馬謖を軍律違反で処刑した故事から。'},
+  {id:'g_h8',f:'goi',lv:'hard',q:'「玉石混淆」の意味はどれか。',ch:['優れたものと劣ったものが入り混じる','宝石を集める','石を磨く','品質が均一'],a:0,ex:'玉（宝石）と石が混ざっている状態。「混交」とも書く。'},
+  {id:'g_h9',f:'goi',lv:'hard',q:'「呉下の阿蒙」の意味はどれか。',ch:['学問を修めず昔のままの人','優秀な人物','呉の国の英雄','年長者'],a:0,ex:'「士別れて三日、刮目して相待すべし」と対になる故事。成長のない人を指す。'},
+  {id:'g_h10',f:'goi',lv:'hard',q:'「杜撰」の意味と由来の組み合わせはどれか。',ch:['ずさん・杜黙という詩人の作が規則に合わなかった故事','ずさん・杜の中で書いた','とさん・撰者の名','ずさん・由来不明'],a:0,ex:'いいかげんで誤りが多いこと。'},
+  {id:'g_h11',f:'goi',lv:'hard',q:'「鶏口となるも牛後となるなかれ」の意味はどれか。',ch:['大組織の末端より小組織の長がよい','牛を飼うべきだ','鶏を育てる','大きな組織に入るべきだ'],a:0,ex:'『史記』の故事。小さくても長になるほうがよいという教え。'},
+  {id:'g_h12',f:'goi',lv:'hard',q:'「温故知新」「他山の石」「呉下の阿蒙」に共通する主題はどれか。',ch:['学びや成長のあり方','戦いの戦術','自然の描写','人間関係の対立'],a:0,ex:'いずれも学ぶ姿勢や自己の成長に関わる故事成語。'},
+  {id:'b_e17',f:'bunpo',lv:'easy',q:'文節に区切るとき、目安となる言い方はどれか。',ch:['「ね」「さ」を入れて切れるところ','句読点のあるところ','漢字の切れ目','単語ごと'],a:0,ex:'「わたしはね、学校へね、行くよ」のように「ね」を入れて自然なところが文節の切れ目。'},
+  {id:'b_e18',f:'bunpo',lv:'easy',q:'「美しい花が咲く」の主語はどれか。',ch:['花が','美しい','咲く','美しい花'],a:0,ex:'主語は「何が」にあたる文節。「花が」。'},
+  {id:'b_e19',f:'bunpo',lv:'easy',q:'自立語だけで文節を作れないものはどれか。',ch:['助詞','名詞','動詞','副詞'],a:0,ex:'助詞と助動詞は付属語で、単独では文節を作れない。'},
+  {id:'b_e20',f:'bunpo',lv:'easy',q:'「そして」「しかし」の品詞はどれか。',ch:['接続詞','副詞','連体詞','感動詞'],a:0,ex:'接続詞。文や語句をつなぐ働きをする。'},
+  {id:'b_e21',f:'bunpo',lv:'easy',q:'「ああ」「もしもし」の品詞はどれか。',ch:['感動詞','接続詞','副詞','助詞'],a:0,ex:'感動詞。感動・呼びかけ・応答を表す。'},
+  {id:'b_e22',f:'bunpo',lv:'easy',q:'活用のない自立語で、主語になれるものはどれか。',ch:['名詞','副詞','連体詞','接続詞'],a:0,ex:'名詞（体言）。「が」「は」を伴って主語になる。'},
+  {id:'b_e23',f:'bunpo',lv:'easy',q:'動詞の活用形で、「ない」に続く形はどれか。',ch:['未然形','連用形','終止形','連体形'],a:0,ex:'未然形。「ます」に続くのは連用形、「とき」に続くのは連体形。'},
+  {id:'b_e24',f:'bunpo',lv:'easy',q:'動詞の活用形で、「ば」に続く形はどれか。',ch:['仮定形','已然形','未然形','命令形'],a:0,ex:'現代語では仮定形。古文では已然形が「ば」に続くと確定条件になる。'},
+  {id:'b_e25',f:'bunpo',lv:'easy',q:'「書く」の活用の種類はどれか。',ch:['五段活用','上一段活用','下一段活用','サ行変格活用'],a:0,ex:'「書かない」でア段になるので五段活用。'},
+  {id:'b_e26',f:'bunpo',lv:'easy',q:'可能動詞にあたるものはどれか。',ch:['書ける','書かれる','書かせる','書きたい'],a:0,ex:'五段動詞から作られる下一段動詞。「書ける」「読める」など。'},
+  {id:'b_e27',f:'bunpo',lv:'easy',q:'「言う」の尊敬語はどれか。',ch:['おっしゃる','申し上げる','申す','存じる'],a:0,ex:'おっしゃる。申す・申し上げるは謙譲語。'},
+  {id:'b_e28',f:'bunpo',lv:'easy',q:'「見る」の尊敬語はどれか。',ch:['ご覧になる','拝見する','見られる','お目にかかる'],a:0,ex:'ご覧になる。拝見するは謙譲語。'},
+  {id:'b_e29',f:'bunpo',lv:'easy',q:'「いる」の謙譲語はどれか。',ch:['おる','いらっしゃる','おいでになる','ございます'],a:0,ex:'おる。いらっしゃる・おいでになるは尊敬語。'},
+  {id:'b_e30',f:'bunpo',lv:'easy',q:'丁寧語にあたるものはどれか。',ch:['です・ます','おっしゃる','いたす','召し上がる'],a:0,ex:'です・ます・ございます。聞き手への敬意を表す。'},
+  {id:'b_e31',f:'bunpo',lv:'easy',q:'「お客様が来る」を尊敬語にすると正しいものはどれか。',ch:['お客様がいらっしゃる','お客様が参る','お客様が伺う','お客様がおる'],a:0,ex:'いらっしゃる。参る・伺う・おるは謙譲語。'},
+  {id:'b_e32',f:'bunpo',lv:'easy',q:'「先生に会う」を謙譲語にすると正しいものはどれか。',ch:['先生にお目にかかる','先生にお会いになる','先生に会われる','先生に会いなさる'],a:0,ex:'お目にかかる。自分の動作をへりくだる。'},
+  {id:'b_s13',f:'bunpo',lv:'std',q:'「先生が話される」の「れる」の意味として最も適切なものはどれか。',ch:['尊敬','受け身','可能','自発'],a:0,ex:'主語が敬意を払うべき人物なので尊敬。「話せる」と言い換えられれば可能。'},
+  {id:'b_s14',f:'bunpo',lv:'std',q:'「故郷が思い出される」の「れる」の意味はどれか。',ch:['自発','受け身','可能','尊敬'],a:0,ex:'自発。自然にそうなる意味で、「思う」「案じる」など心情の動詞に付きやすい。'},
+  {id:'b_s15',f:'bunpo',lv:'std',q:'「た」が完了ではなく存続の意味であるものはどれか.',ch:['壁に掛かった絵','昨日読んだ本','今着いた','食べた'],a:0,ex:'存続。「掛かっている絵」と言い換えられる。'},
+  {id:'b_s16',f:'bunpo',lv:'std',q:'「らしい」が推定の助動詞であるものはどれか。',ch:['雨が降るらしい','彼は男らしい','子どもらしい服','春らしい陽気'],a:0,ex:'推定。他は「〜にふさわしい」という意味の接尾語。'},
+  {id:'b_s17',f:'bunpo',lv:'std',q:'「に」が形容動詞の活用語尾であるものはどれか.',ch:['静かになる','東京に行く','友人に会う','三時に着く'],a:0,ex:'「静かだ」の連用形。他は格助詞。'},
+  {id:'b_s18',f:'bunpo',lv:'std',q:'「で」が断定の助動詞「だ」の連用形であるものはどれか。',ch:['彼は学生である','バスで行く','公園で遊ぶ','喜んで'],a:0,ex:'「である」の「で」。他は場所や手段を示す格助詞、接続助詞。'},
+  {id:'b_s19',f:'bunpo',lv:'std',q:'複文の説明として正しいものはどれか。',ch:['主語述語の関係が入れ子になっている','対等に2つ並ぶ','1組だけある','述語がない'],a:0,ex:'「私は彼が来ると思う」のように、従属節が文の一部になっている。'},
+  {id:'b_s20',f:'bunpo',lv:'std',q:'「読まれる」が受け身である場合の主語として適切なものはどれか。',ch:['本','先生','私','だれでも'],a:0,ex:'受け身は動作を受ける側が主語。「この本は多くの人に読まれる」。'},
+  {id:'b_s21',f:'bunpo',lv:'std',q:'「せる・させる」の意味はどれか。',ch:['使役','受け身','可能','尊敬'],a:0,ex:'使役。他人に動作をさせる意味。'},
+  {id:'b_s22',f:'bunpo',lv:'std',q:'「まい」の意味の組み合わせとして正しいものはどれか。',ch:['打消の意志・打消の推量','過去・完了','断定・存在','尊敬・受け身'],a:0,ex:'「二度と行くまい」（意志）、「彼は来るまい」（推量）。'},
+  {id:'b_s23',f:'bunpo',lv:'std',q:'「ご覧になられる」が不適切な理由はどれか.',ch:['二重敬語だから','謙譲語だから','丁寧語だから','適切である'],a:0,ex:'「ご覧になる」で尊敬語が完成しているので「られる」は不要。'},
+  {id:'b_s24',f:'bunpo',lv:'std',q:'「お客様、こちらでお待ちしてください」の誤りはどれか。',ch:['謙譲語を相手の動作に使っている','二重敬語である','丁寧語が足りない','誤りはない'],a:0,ex:'「お待ちする」は謙譲語。正しくは「お待ちください」。'},
+  {id:'b_h7',f:'bunpo',lv:'hard',q:'「ない」が補助形容詞であるものはどれか。',ch:['美しくない','行かない','お金がない','危ない'],a:0,ex:'補助形容詞は「〜く」に続く。「美しくはない」と「は」を入れられる。'},
+  {id:'b_h8',f:'bunpo',lv:'hard',q:'「そうだ」を「様態」と「伝聞」で見分ける方法はどれか。',ch:['接続する形が違う（連用形なら様態、終止形なら伝聞）','意味だけで判断する','文末で判断する','見分けられない'],a:0,ex:'「降りそうだ」（連用形＝様態）、「降るそうだ」（終止形＝伝聞）。'},
+  {id:'b_h9',f:'bunpo',lv:'hard',q:'「彼に来られて困った」の「られる」の意味はどれか。',ch:['受け身（迷惑の受け身）','可能','尊敬','自発'],a:0,ex:'自分が迷惑を被る受け身。日本語に特徴的な用法。'},
+  {id:'b_h10',f:'bunpo',lv:'hard',q:'「拝見させていただきます」が過剰とされる理由はどれか。',ch:['謙譲語が二重に重なっているから','尊敬語だから','丁寧語だから','過剰ではない'],a:0,ex:'「拝見します」で十分。謙譲表現の重複は冗長になる。'},
+  {id:'b_h11',f:'bunpo',lv:'hard',q:'「連体詞」と「形容動詞の連体形」を見分ける方法はどれか。',ch:['言い切りの形にできるかどうか','意味で判断する','文字数で判断する','見分けられない'],a:0,ex:'「静かな」→「静かだ」と言い切れるので形容動詞。「大きな」は「大きだ」と言えないので連体詞。'},
+  {id:'b_h12',f:'bunpo',lv:'hard',q:'敬語の「謙譲語II（丁重語）」の説明として正しいものはどれか。',ch:['自分の動作を相手に対して改まって述べる','相手を高める','物事を美化する','命令を表す'],a:0,ex:'「参ります」「申します」など。動作の向かう相手を高めるのではなく、聞き手に丁重に述べる。'},
+  {id:'t_e15',f:'koten',lv:'easy',q:'歴史的仮名遣い「まゐる」を現代仮名遣いに直すとどうなるか。',ch:['まいる','まゑる','まうる','まある'],a:0,ex:'「ゐ」は「い」に直す。'},
+  {id:'t_e16',f:'koten',lv:'easy',q:'歴史的仮名遣い「てふ」を現代仮名遣いに直すとどうなるか。',ch:['ちょう','てう','てふ','ちゅう'],a:0,ex:'「eu」は「よう」に変わる。てふ→ちょう（蝶）。'},
+  {id:'t_e17',f:'koten',lv:'easy',q:'歴史的仮名遣い「かうべ」を現代仮名遣いに直すとどうなるか。',ch:['こうべ','かうべ','こおべ','かおべ'],a:0,ex:'「au」は「おう」に変わる。かうべ→こうべ（頭）。'},
+  {id:'t_e18',f:'koten',lv:'easy',q:'古文の「いみじ」の意味として適切なものはどれか。',ch:['程度がはなはだしい','忌み嫌う','神聖である','短い'],a:0,ex:'よい意味にも悪い意味にも使う。「たいそう」「ひどく」。'},
+  {id:'t_e19',f:'koten',lv:'easy',q:'古文の「かしこし」の意味として適切なものはどれか。',ch:['おそれ多い・すぐれている','賢い','恐ろしい','かしこまる'],a:0,ex:'畏れ多い、また非常にすぐれているの意味。'},
+  {id:'t_e20',f:'koten',lv:'easy',q:'古文の「なつかし」の意味として適切なものはどれか。',ch:['心が引かれる・親しみやすい','昔が恋しい','悲しい','うれしい'],a:0,ex:'そばにいたいと思う気持ち。現代語の「懐かしい」とは異なる。'},
+  {id:'t_e21',f:'koten',lv:'easy',q:'古文の「はづかし」の意味として適切なものはどれか。',ch:['こちらが気後れするほど立派だ','恥ずかしい','みっともない','照れくさい'],a:0,ex:'相手が立派で自分が恥ずかしくなる、の意味。'},
+  {id:'t_e22',f:'koten',lv:'easy',q:'古文の「ののしる」の意味として適切なものはどれか。',ch:['大声で騒ぐ','悪口を言う','ささやく','だまる'],a:0,ex:'評判になる、大騒ぎするの意味。悪口の意味は現代語。'},
+  {id:'t_e23',f:'koten',lv:'easy',q:'古文の「あやし」の意味に含まれないものはどれか。',ch:['正しい','不思議だ','身分が低い','粗末だ'],a:0,ex:'不思議、賤しい、粗末などの意味をもつ。'},
+  {id:'t_e24',f:'koten',lv:'easy',q:'『伊勢物語』の主人公のモデルとされる人物はだれか。',ch:['在原業平','紀貫之','菅原道真','藤原道長'],a:0,ex:'歌物語で、業平と思われる「男」の一代記の形をとる。'},
+  {id:'t_e25',f:'koten',lv:'easy',q:'『おくのほそ道』の作者はだれか。',ch:['松尾芭蕉','与謝蕪村','小林一茶','井原西鶴'],a:0,ex:'松尾芭蕉。東北・北陸をめぐった紀行文。'},
+  {id:'t_e26',f:'koten',lv:'easy',q:'『古今和歌集』が成立した時代はどれか。',ch:['平安時代','奈良時代','鎌倉時代','江戸時代'],a:0,ex:'平安時代初期。天皇の命で編まれた最初の勅撰和歌集。'},
+  {id:'t_e27',f:'koten',lv:'easy',q:'和歌の五・七・五・七・七という形式を何というか。',ch:['短歌','俳句','川柳','長歌'],a:0,ex:'短歌。俳句と川柳は五・七・五。'},
+  {id:'t_e28',f:'koten',lv:'easy',q:'俳句に必要とされる2つの要素はどれか。',ch:['季語と切れ字','季語と枕詞','切れ字と対句','枕詞と序詞'],a:0,ex:'季語で季節を示し、切れ字（や・かな・けり）で感動の中心を示す。'},
+  {id:'t_s13',f:'koten',lv:'std',q:'係助詞「や」「か」の結びの活用形はどれか。',ch:['連体形','已然形','終止形','未然形'],a:0,ex:'ぞ・なむ・や・かは連体形、こそは已然形で結ぶ。'},
+  {id:'t_s14',f:'koten',lv:'std',q:'古文の「さらに〜ず」の意味はどれか。',ch:['まったく〜ない','さらに〜ない','もっと〜ない','少し〜ない'],a:0,ex:'呼応の副詞。全否定を表す。'},
+  {id:'t_s15',f:'koten',lv:'std',q:'古文の「え〜ず」の意味はどれか。',ch:['〜できない','〜しない','〜したくない','〜すべきでない'],a:0,ex:'不可能を表す。「え言はず」で「言うことができない」。'},
+  {id:'t_s16',f:'koten',lv:'std',q:'古文の「な〜そ」の意味はどれか。',ch:['〜するな（禁止）','〜しない','〜したい','〜だろう'],a:0,ex:'柔らかい禁止。「な行きそ」で「行くな」。'},
+  {id:'t_s17',f:'koten',lv:'std',q:'助動詞「き」と「けり」の違いとして正しいものはどれか。',ch:['「き」は直接体験、「けり」は伝聞や気づき','どちらも同じ','「き」は未来','「けり」は打消'],a:0,ex:'「き」は自分が経験した過去、「けり」は人から聞いた過去や詠嘆。'},
+  {id:'t_s18',f:'koten',lv:'std',q:'古文の「つ」「ぬ」の意味はどれか。',ch:['完了','過去','推量','打消'],a:0,ex:'完了・強意。「てむ」「なむ」の形で強意＋推量になる。'},
+  {id:'t_s19',f:'koten',lv:'std',q:'古文の「べし」の意味に含まれないものはどれか。',ch:['打消','推量','意志','当然'],a:0,ex:'推量・意志・当然・可能・命令・適当。打消は「ず」「じ」。'},
+  {id:'t_s20',f:'koten',lv:'std',q:'和歌の「掛詞」の説明として正しいものはどれか。',ch:['一つの音に二つの意味を重ねる','決まった語を導く','情景を比喩で表す','対になる句を並べる'],a:0,ex:'「まつ」に「松」と「待つ」を重ねるなど。'},
+  {id:'t_s21',f:'koten',lv:'std',q:'『新古今和歌集』を代表する歌人はだれか。',ch:['藤原定家','紀貫之','柿本人麻呂','大伴家持'],a:0,ex:'藤原定家。『百人一首』の撰者でもある。'},
+  {id:'t_s22',f:'koten',lv:'std',q:'漢文の「再読文字」にあたるものはどれか。',ch:['未','而','於','焉'],a:0,ex:'「未」は「いまだ〜ず」と2回読む。而・於・焉は置き字。'},
+  {id:'t_s23',f:'koten',lv:'std',q:'漢文「学而時習之」の書き下しとして正しいものはどれか。',ch:['学びて時に之を習ふ','学びて之を時に習ふ','時に学びて之を習ふ','之を学びて時に習ふ'],a:0,ex:'『論語』の冒頭。「而」は置き字で読まない。'},
+  {id:'t_s24',f:'koten',lv:'std',q:'「一二点」と「レ点」を併用するときの読み方の原則はどれか。',ch:['レ点を先に処理する','一二点を先に処理する','どちらでもよい','併用できない'],a:0,ex:'すぐ上に返るレ点を優先し、そのあと一二点でより離れた語へ返る。'},
+  {id:'t_h8',f:'koten',lv:'hard',q:'「あり」の活用の種類はどれか。',ch:['ラ行変格活用','四段活用','上二段活用','下二段活用'],a:0,ex:'ラ変。あり・をり・はべり・いまそかりの4語。終止形がイ段で終わる点が特徴。'},
+  {id:'t_h9',f:'koten',lv:'hard',q:'「死ぬ」の活用の種類はどれか。',ch:['ナ行変格活用','四段活用','上一段活用','ラ行変格活用'],a:0,ex:'ナ変。「死ぬ」「往ぬ（去ぬ）」の2語のみ。'},
+  {id:'t_h10',f:'koten',lv:'hard',q:'「あはれなり」の活用の種類はどれか.',ch:['ナリ活用の形容動詞','タリ活用の形容動詞','ク活用の形容詞','シク活用の形容詞'],a:0,ex:'ナリ活用。漢語に付く「堂々たり」などはタリ活用。'},
+  {id:'t_h11',f:'koten',lv:'hard',q:'「花咲かば」と「花咲けば」の意味の違いはどれか。',ch:['前者は仮定条件、後者は確定条件','どちらも仮定','どちらも確定','前者が確定'],a:0,ex:'古文では未然形＋ばが仮定、已然形＋ばが確定（〜ので、〜すると）。'},
+  {id:'t_h12',f:'koten',lv:'hard',q:'「敬語の本動詞と補助動詞」の違いとして正しいものはどれか。',ch:['本動詞は単独で意味をもち、補助動詞は他の動詞に付く','同じもの','補助動詞は敬語でない','本動詞は活用しない'],a:0,ex:'「給ふ」が単独なら本動詞、「〜し給ふ」なら補助動詞。'},
+  {id:'t_h13',f:'koten',lv:'hard',q:'漢文「己所不欲、勿施於人」の意味はどれか。',ch:['自分が望まないことを人にしてはならない','人に施しをせよ','自分の欲を満たせ','他人に従え'],a:0,ex:'『論語』。「己の欲せざる所、人に施すこと勿かれ」。'},
+  {id:'t_h14',f:'koten',lv:'hard',q:'漢文の「使」「令」が表す意味はどれか。',ch:['使役','受け身','否定','疑問'],a:0,ex:'「AをしてBせしむ」の形で使役を表す。受け身は「見」「被」「為〜所」。'}
+];
+const LV={easy:{n:'基礎',d:'中1〜中2'},std:{n:'標準',d:'中3'},hard:{n:'入試',d:'高校受験'}};
+const FICON={kanji:'✍️',goi:'📚',bunpo:'🔤',koten:'🎋'};
+
+function load(){
+  try{const raw=localStorage.getItem(STORE_KEY);if(raw)return JSON.parse(raw);
+    const init={stats:{},best:{}};localStorage.setItem(STORE_KEY,JSON.stringify(init));return init;
+  }catch(e){if(!mem)mem={stats:{},best:{}};return mem;}
+}
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){mem=state;}}
+let state=load();
+if(!state.stats)state.stats={};
+if(!state.best)state.best={};
+if(state.xp==null)state.xp=0;
+if(state.maxCombo==null)state.maxCombo=0;
+if(!state.ach)state.ach=[];
+if(!state.streak)state.streak={day:'',count:0};
+if(state.taBest==null)state.taBest=0;
+if(!state.stat)state.stat={day:'',dayQ:0,fields:[],peakWeak:0};
+function bumpQ(){
+  const t=todayStr();
+  if(state.stat.day!==t){state.stat.day=t;state.stat.dayQ=0;}
+  state.stat.dayQ++;
+  const h=new Date().getHours();
+  if(h<5)unlock('nightowl'); else if(h<8)unlock('earlybird');
+  if(state.stat.dayQ>=50)unlock('marathon');
+  save();
+}
+if(!state.cards)state.cards=[];
+
+const EVO=[
+ {n:'文字をなぞる人',e:'✏️'},{n:'かなを覚えた人',e:'🔤'},{n:'漢字を書く人',e:'✍️'},
+ {n:'熟語を知る人',e:'📗'},{n:'辞書を引く人',e:'📕'},{n:'ことわざ通',e:'🍵'},
+ {n:'故事に親しむ人',e:'🏮'},{n:'品詞を見分ける人',e:'🧩'},{n:'活用を操る人',e:'⚙️'},
+ {n:'敬語を使いこなす人',e:'🎎'},{n:'文を組み立てる人',e:'🧱'},{n:'仮名遣いを読む人',e:'📜'},
+ {n:'古語に触れる人',e:'🎋'},{n:'係り結びを解く人',e:'🪢'},{n:'和歌を味わう人',e:'🌸'},
+ {n:'漢文を訓む人',e:'🀄'},{n:'随筆を読む人',e:'🖌'},{n:'物語を語る人',e:'📖'},
+ {n:'言葉を選ぶ人',e:'🪶'},{n:'ことばを究める人',e:'🏛'},
+];
+function evoTitle(l){return EVO[Math.min(l,EVO.length)-1];}
+
+const CARDS=[
+ {id:'kanji_kaku',r:'N',e:'✍️',n:'漢字の画数',d:'最も画数の多い漢字は「たいと」とされる84画の字。ただし辞書によっては収録されず、実在を疑う説もある'},
+ {id:'hiragana',r:'N',e:'あ',n:'ひらがなの成り立ち',d:'漢字をくずして作られた。「安」から「あ」、「以」から「い」、「宇」から「う」が生まれた'},
+ {id:'katakana',r:'N',e:'ア',n:'カタカナの成り立ち',d:'漢字の一部を取って作られた。「阿」の左側から「ア」、「伊」の左側から「イ」'},
+ {id:'kunyomi',r:'N',e:'📖',n:'音読みと訓読み',d:'音読みは中国から伝わった読み方、訓読みは日本語の意味を当てた読み方。同じ字に複数の音があるのは、伝わった時代が違うため'},
+ {id:'okurigana',r:'N',e:'✏️',n:'送り仮名の役割',d:'「表す」と「表れる」のように、送り仮名で読みと意味を区別する。漢字だけでは判別できない'},
+ {id:'kokuji',r:'N',e:'🗾',n:'国字',d:'峠・畑・働・込など、日本で作られた漢字。多くは音読みを持たない。「働」は例外的に「ドウ」の音がある'},
+ {id:'sansuke',r:'N',e:'🔢',n:'一・二・三の由来',d:'指を並べた形が起源とされる。四から先が別の形なのは、線を重ねすぎると読みにくいため'},
+ {id:'yamai',r:'N',e:'🏥',n:'部首「やまいだれ」',d:'病・疲・痛など。人が寝台にもたれる形が元で、病気に関する字に付く'},
+ {id:'sanzui',r:'N',e:'💧',n:'部首「さんずい」',d:'水を表す3つの点。海・川・池など水に関わる字に付く。同じ水でも「氷」はにすい'},
+ {id:'aiueo',r:'N',e:'🔤',n:'五十音図の順序',d:'あかさたなはまやらわ、の並びは口の奥から前へ音が移る順。インドの音韻学の影響を受けている'},
+ {id:'nengo_kanji',r:'N',e:'📅',n:'元号に使われる漢字',d:'これまでの元号で最も多く使われたのは「永」。次いで「元」「天」「治」が続く'},
+ {id:'iroha',r:'N',e:'🎴',n:'いろは歌',d:'47文字すべてを1度ずつ使った歌。「色は匂へど散りぬるを」で始まり、無常観を詠む'},
+ {id:'haiku_ki',r:'N',e:'🌸',n:'季語',d:'俳句に必ず入れる季節の言葉。旧暦が基準なので、七夕は秋、五月雨は夏になる'},
+ {id:'basho',r:'N',e:'🐸',n:'松尾芭蕉',d:'『おくのほそ道』の作者。「古池や蛙飛びこむ水の音」は俳句の代表作として知られる'},
+ {id:'genji',r:'N',e:'👘',n:'源氏物語',d:'紫式部が書いた54帖の長編。世界最古の長編小説の一つとされ、多くの言語に翻訳されている'},
+ {id:'makura',r:'N',e:'🌅',n:'枕草子の書き出し',d:'「春はあけぼの」。四季それぞれの趣を短く言い切る形式が、以後の随筆に影響を与えた'},
+ {id:'ateji',r:'R',e:'🃏',n:'当て字',d:'珈琲・煙草・浪漫など、音や意味を借りて漢字を当てたもの。明治期に西洋語を訳す際に多く作られた'},
+ {id:'kanji_kaigi',r:'R',e:'🇨🇳',n:'和製漢語',d:'社会・経済・科学・哲学などは日本で作られた漢語。中国へ逆輸入され、現在も使われている'},
+ {id:'kotowaza_uso',r:'R',e:'🤔',n:'ことわざの矛盾',d:'「善は急げ」と「急がば回れ」のように反対の教訓が並存する。場面ごとの知恵として使い分けられてきた'},
+ {id:'yojijukugo',r:'R',e:'4️⃣',n:'四字熟語の出どころ',d:'多くは中国の古典に由来する。臥薪嘗胆は『史記』、五十歩百歩は『孟子』、矛盾は『韓非子』'},
+ {id:'keigo_5',r:'R',e:'🎎',n:'敬語の5分類',d:'2007年の文化審議会答申で、従来の3分類から尊敬・謙譲I・謙譲II・丁寧・美化の5分類に整理された'},
+ {id:'ranuki',r:'R',e:'🗣',n:'ら抜き言葉',d:'「食べれる」など。可能と受け身を区別できる利点があり、言語変化として研究されている。公的な場面では避けられる'},
+ {id:'kakari',r:'R',e:'🪢',n:'係り結びの消滅',d:'古文の係り結びは室町時代ごろに衰えた。現代語に「こそ〜すれ」がわずかに残っている'},
+ {id:'kanbun_kundoku',r:'R',e:'🀄',n:'訓読という発明',d:'外国語である漢文を、返り点と送り仮名で日本語の語順に読み替える技術。翻訳せずに読む独特の方法'},
+ {id:'manyo',r:'R',e:'📜',n:'万葉仮名',d:'漢字の音を借りて日本語を書き表した。「山」を「也麻」と書くなど。ひらがな成立以前の工夫'},
+ {id:'sakimori',r:'R',e:'🏹',n:'防人の歌',d:'『万葉集』には九州防衛に送られた東国の農民の歌が収められている。庶民の声を残した点で世界的にも珍しい'},
+ {id:'tsurezure',r:'R',e:'🖌',n:'三大随筆',d:'『枕草子』『方丈記』『徒然草』。いずれも作者の観察と思索を自由な形式で書き記す'},
+ {id:'heike',r:'R',e:'🎻',n:'平家物語と琵琶法師',d:'文字で読むものではなく、琵琶法師が語り歩いて広まった。だから声に出して読むと調子がよい'},
+ {id:'kokugo_jiten',r:'SR',e:'📕',n:'言海',d:'大槻文彦が17年かけて独力で編んだ日本初の近代的国語辞典。1891年に完成した'},
+ {id:'joyo',r:'SR',e:'📋',n:'常用漢字表',d:'2136字。2010年の改定で「鬱」「彙」などが加わり、情報機器の普及で手書きしにくい字も入るようになった'},
+ {id:'kanji_kentei',r:'SR',e:'🏅',n:'漢字の総数',d:'『大漢和辞典』には約5万字が収録されている。日常的に使われるのはそのごく一部'},
+ {id:'ruby',r:'SR',e:'🔠',n:'ルビの語源',d:'振り仮名を「ルビ」と呼ぶのは、イギリスで使われた活字の大きさの名前「ruby（5.5ポイント）」に由来する'},
+ {id:'genkou',r:'SR',e:'📝',n:'原稿用紙の20字',d:'1行20字・20行の400字詰めが標準になったのは、明治期の新聞や雑誌の組版の都合による'},
+ {id:'tategaki',r:'SR',e:'📃',n:'縦書きと横書き',d:'漢字文化圏では縦書きが 主流 だったが、明治以降に数式や外国語を扱う必要から横書きが広がった'},
+ {id:'dord_jp',r:'H',e:'👻',n:'幽霊文字',d:'JIS漢字には、典拠が不明なまま登録された「幽霊文字」がある。「妛」などが有名で、資料の写し間違いから生まれたとされる'},
+ {id:'kanji_naga',r:'H',e:'🐉',n:'たいと',d:'雲・龍・龍・龍などを組み合わせた84画の字とされる。人名として伝わるが、確かな出典は見つかっていない'},
+ {id:'kunten_h',r:'H',e:'🈶',n:'をこと点',d:'平安時代、漢文を読むために漢字の四隅に点を打って助詞や活用を示した。送り仮名の原型にあたる'},
+ {id:'nihongo_no',r:'H',e:'🔤',n:'「は」と「わ」',d:'助詞の「は」を「わ」と読むのは、語中のハ行が「ワ行」に変化した歴史の名残。現代仮名遣いでも例外として残された'},
+ {id:'kaeriten_h',r:'H',e:'↩️',n:'一二点の限界',d:'返り点は一二点、上中下点、甲乙点、天地人点の順に入れ子で使う。複雑な構文では4段階まで重なる'},
+ {id:'shiritori_h',r:'H',e:'🔚',n:'「ん」で終わる理由',d:'しりとりで「ん」が負けになるのは、日本語に「ん」で始まる語がほぼないため。アイヌ語由来の地名などに例外がある'},
+
+ {id:'sensei_j',r:'N',e:'👨‍🏫',n:'「先生」の由来',d:'先に生まれた人の意味。中国では単に年長者を指す語だったが、日本では教師や医師への敬称になった'},
+ {id:'arigatou',r:'N',e:'🙏',n:'ありがとう',d:'「有り難し」＝めったにないの意味から。感謝を「めずらしいこと」として表す言い方は世界的にも珍しい'},
+ {id:'sayonara',r:'N',e:'👋',n:'さようなら',d:'「さようであるならば」という接続詞が独立した別れの言葉。世界の別れの挨拶では珍しいタイプ'},
+ {id:'oyasumi',r:'N',e:'🌙',n:'おはよう',d:'「お早くからご苦労さま」が縮まったもの。時刻ではなく相手をねぎらう言葉が起源'},
+ {id:'shinbun',r:'N',e:'📰',n:'新聞の語源',d:'新しく聞いたことの意味。もとは中国語で、幕末に西洋のnewspaperの訳語として定着した'},
+ {id:'tetsudou',r:'N',e:'🚂',n:'鉄道と翻訳',d:'明治期に西洋語を漢語で訳す試みが盛んに行われた。鉄道・電話・銀行などはこの時期に作られた'},
+ {id:'kanji_kazu',r:'N',e:'🔢',n:'常用漢字の数',d:'2136字。小学校で1026字、中学校で残りを習う。2010年の改定で196字が追加された'},
+ {id:'bushu_kazu',r:'N',e:'🧩',n:'部首の数',d:'漢和辞典では214の部首に分類するのが一般的。『康熙字典』の分類が基準になっている'},
+ {id:'tenten',r:'N',e:'゛',n:'濁点の歴史',d:'古い文献では濁点を付けないことが多く、文脈で読み分けていた。現在の形が定着したのは近世以降'},
+ {id:'kutouten',r:'N',e:'、',n:'句読点',d:'日本語に句読点が広く使われるようになったのは明治期。それ以前の文章にはほとんど付いていない'},
+ {id:'yubi_kazoe',r:'N',e:'🖐',n:'助数詞',d:'一本・一枚・一頭・一羽など、日本語は数える物によって語を変える。ウサギを一羽と数えるのは諸説ある'},
+ {id:'kotoba_kari',r:'N',e:'🎣',n:'外来語の層',d:'ポルトガル語（パン・カステラ）、オランダ語（ガラス・コップ）、英語と、伝来した時代ごとに層をなしている'},
+ {id:'kigo_shiki',r:'N',e:'🍂',n:'季語と旧暦',d:'俳句の季語は旧暦が基準。七夕が秋、五月雨が夏になるのはこのため'},
+ {id:'senryu',r:'N',e:'😆',n:'川柳と俳句',d:'どちらも五・七・五だが、俳句は季語と切れ字を必要とし、川柳は人事や世相を軽妙に詠む'},
+ {id:'waka_kazu',r:'N',e:'🌸',n:'万葉集の歌数',d:'約4500首を収める。天皇から農民まで幅広い層の歌が含まれる点が大きな特徴'},
+ {id:'hyakunin_j',r:'N',e:'🎴',n:'百人一首',d:'藤原定家が選んだとされる100首。かるたとして遊ばれるようになったのは江戸時代から'},
+ {id:'kanji_onkun',r:'R',e:'🔀',n:'呉音・漢音・唐音',d:'同じ字でも伝来時期で読みが違う。「行」は行列（ぎょう＝呉音）、行動（こう＝漢音）、行脚（あん＝唐音）'},
+ {id:'jukujikun',r:'R',e:'🌊',n:'熟字訓',d:'「大人」を「おとな」、「明日」を「あす」のように、熟語全体に訓を当てたもの。一字ずつには分解できない'},
+ {id:'ryakuji',r:'R',e:'✂️',n:'新字体',d:'戦後の国語改革で「國」→「国」のように簡略化された。中国の簡体字とは別に日本独自に進められた'},
+ {id:'kanji_china',r:'R',e:'🔄',n:'逆輸入された漢語',d:'社会・経済・革命・共産などは日本で作られ、中国語に取り入れられた。中国語の近代語彙の一部は日本由来'},
+ {id:'keigo_history',r:'R',e:'🎎',n:'敬語の変化',d:'古文の敬語は身分による絶対敬語だったが、現代は相手との関係で決まる相対敬語に変わった'},
+ {id:'kakari_end',r:'R',e:'🪢',n:'係り結びの消滅',d:'室町時代ごろに衰えた。現代語では「こそあれ」などにわずかな痕跡が残る'},
+ {id:'genbun_itchi',r:'R',e:'✒️',n:'言文一致',d:'明治期、書き言葉を話し言葉に近づける運動。二葉亭四迷『浮雲』が先駆けとされる'},
+ {id:'natsume',r:'R',e:'📗',n:'夏目漱石と造語',d:'「新陳代謝」「反射」など、漱石が広めたとされる語がある。文学者が語彙に与えた影響は大きい'},
+ {id:'romaji',r:'R',e:'🔤',n:'ローマ字の方式',d:'ヘボン式と訓令式がある。パスポートはヘボン式、学校教育では訓令式が基本とされてきた'},
+ {id:'tategaki_j',r:'R',e:'📃',n:'縦書きと横書き',d:'漢字文化圏では縦書きが基本だったが、明治以降に数式や外国語を扱う必要から横書きが広がった'},
+ {id:'kanbun_japan',r:'R',e:'🀄',n:'訓読という発明',d:'外国語である漢文を、返り点と送り仮名で日本語の語順に読み替える技術。翻訳せずに読む独特の方法'},
+ {id:'sakubun_400',r:'R',e:'📝',n:'原稿用紙の400字',d:'1行20字・20行が標準になったのは、明治期の新聞や雑誌の組版の都合による'},
+ {id:'kanji_saichou',r:'SR',e:'🐉',n:'最も画数の多い字',d:'「たいと」とされる84画の字が知られるが、確かな出典が見つかっておらず実在を疑う説もある'},
+ {id:'genkai',r:'SR',e:'📕',n:'言海',d:'大槻文彦が17年かけて独力で編んだ日本初の近代的国語辞典。1891年に完成した'},
+ {id:'ruby_j',r:'SR',e:'🔠',n:'ルビの語源',d:'振り仮名を「ルビ」と呼ぶのは、イギリスの活字サイズの名称「ruby（5.5ポイント）」に由来する'},
+ {id:'iroha_j',r:'SR',e:'🎋',n:'いろは歌の謎',d:'47文字を1度ずつ使う。各行の末尾を拾うと「とかなくてしす（咎無くて死す）」と読めるという説がある'},
+ {id:'kokugo_kaikaku',r:'SR',e:'📜',n:'仮名遣いの改革',d:'1946年の現代かなづかいで、歴史的仮名遣いから表音的な表記へ転換した。「てふ」が「ちょう」になった'},
+ {id:'akutagawa',r:'SR',e:'🖋',n:'言葉を選ぶということ',d:'芥川龍之介は一語の選択に長く迷ったと伝わる。同じ意味でも語感で作品の印象は大きく変わる'},
+ {id:'yurei_moji',r:'H',e:'👻',n:'幽霊文字',d:'JIS漢字には典拠不明のまま登録された字がある。「妛」などが有名で、資料の写し間違いから生まれたとされる'},
+ {id:'okoto_ten',r:'H',e:'🈶',n:'をこと点',d:'平安時代、漢文を読むために漢字の四隅に点を打って助詞や活用を示した。送り仮名の原型にあたる'},
+ {id:'ha_wa',r:'H',e:'🔤',n:'「は」と「わ」',d:'助詞の「は」を「わ」と読むのは、語中のハ行がワ行に変化した歴史の名残。現代仮名遣いでも例外として残された'},
+ {id:'shiritori_j',r:'H',e:'🔚',n:'「ん」で終わる理由',d:'しりとりで「ん」が負けなのは、日本語に「ん」で始まる語がほぼないため。アイヌ語由来の地名などに例外がある'},
+ {id:'kaeriten_j',r:'H',e:'↩️',n:'返り点の階層',d:'一二点、上中下点、甲乙点、天地人点の順に入れ子で使う。複雑な構文では4段階まで重なる'},
+ {id:'nihongo_shugo',r:'H',e:'🫥',n:'主語を言わない言語',d:'日本語は主語を省いても文が成立する。「行く」だけで誰が行くかは文脈で決まる。この性質は世界の言語では少数派ではない'},
+];
+function grantCard(){
+  const have=new Set(state.cards||[]);
+  const hid=CARDS.filter(c=>c.r==='H'&&!have.has(c.id));
+  if(hid.length&&Math.random()<0.04){
+    const pick=hid[Math.floor(Math.random()*hid.length)];
+    state.cards.push(pick.id);save();
+    setTimeout(()=>{toast('🔮 隠し図鑑を発見！ '+pick.e+' '+pick.n);pop(20);},1400);
+    return;
+  }
+  const pool=CARDS.filter(c=>c.r!=='H'&&!have.has(c.id));
+  if(!pool.length)return;
+  const W={N:6,R:3,SR:1};
+  let tot=0;pool.forEach(c=>tot+=W[c.r]);
+  let x=Math.random()*tot,pick=pool[0];
+  for(const c of pool){x-=W[c.r];if(x<=0){pick=c;break;}}
+  state.cards.push(pick.id);save();
+  setTimeout(()=>{toast('📖 図鑑に追加: '+pick.e+' '+pick.n+(pick.r==='SR'?'（超レア！）':pick.r==='R'?'（レア）':''));pop(pick.r==='SR'?20:10);},1400);
+}
+function cardsNormal(){return CARDS.filter(c=>c.r!=='H');}
+let curLv='all';
+
+const XPLV={easy:8,std:10,hard:14};
+const ACH=[
+ {id:'first',name:'はじめの一歩',desc:'クイズを1回クリア'},
+ {id:'combo5',name:'快調',desc:'5コンボ達成'},
+ {id:'combo10',name:'筆が走る',desc:'10コンボ達成'},
+ {id:'combo20',name:'一気呵成',desc:'20コンボ達成'},
+ {id:'perfect',name:'完全無欠',desc:'10問クイズで全問正解'},
+ {id:'solve50',name:'手習い',desc:'50問に挑戦'},
+ {id:'solve100',name:'精進',desc:'100問に挑戦'},
+ {id:'solveall',name:'全問踏破',desc:'すべての問題に挑戦'},
+ {id:'kanji50',name:'漢字の使い手',desc:'漢字で50問正解'},
+ {id:'goi50',name:'語彙の使い手',desc:'語彙で50問正解'},
+ {id:'bunpo50',name:'文法の使い手',desc:'文法で50問正解'},
+ {id:'koten50',name:'古典の使い手',desc:'古文・漢文で50問正解'},
+ {id:'hard50',name:'入試レベル攻略',desc:'入試レベルで50問正解'},
+ {id:'ta15',name:'速筆',desc:'タイムアタック15問'},
+ {id:'ta20',name:'流麗',desc:'タイムアタック20問'},
+ {id:'ta30',name:'筆神',desc:'タイムアタック30問'},
+ {id:'streak3',name:'3日連続',desc:'3日連続で学習'},
+ {id:'streak7',name:'週間皆勤',desc:'7日連続で学習'},
+ {id:'streak14',name:'継続は力',desc:'14日連続で学習'},
+ {id:'streak30',name:'不撓不屈',desc:'30日連続で学習'},
+ {id:'lv5',name:'Lv.5 到達',desc:'レベル5に到達'},
+ {id:'lv10',name:'Lv.10 到達',desc:'レベル10に到達'},
+ {id:'lv20',name:'Lv.20 到達',desc:'最高レベルに到達'},
+ {id:'cards10',name:'収集家',desc:'図鑑を10種あつめる'},
+ {id:'cards30',name:'蒐集家',desc:'図鑑を30種あつめる'},
+ {id:'cards50',name:'大収集家',desc:'図鑑を50種あつめる'},
+ {id:'cards34',name:'言葉の館長',desc:'図鑑をコンプリート'},
+];
+const ACH_SECRET=[
+ {id:'nightowl',name:'宵っ張り',desc:'深夜0時〜4時に学習した'},
+ {id:'earlybird',name:'早起き',desc:'早朝5時〜7時に学習した'},
+ {id:'marathon',name:'健筆',desc:'1日に50問回答した'},
+ {id:'allfield',name:'四分野制覇',desc:'4分野すべてで学習した'},
+ {id:'comeback',name:'捲土重来',desc:'苦手を10問ためてから0にした'},
+ {id:'secret',name:'言霊',desc:'隠し図鑑を手に入れた'},
+];
+function achAll(){return ACH.concat(ACH_SECRET);}
+function isSecret(id){return ACH_SECRET.some(a=>a.id===id);}
+
+
+const MAXLV=20;
+function xpNeed(l){return 40*l+2*l*l;}
+function lvlInfo(xp){
+  let l=1,acc=0,need=xpNeed(1);
+  while(l<MAXLV&&xp>=acc+need){acc+=need;l++;need=xpNeed(l);}
+  if(l>=MAXLV)return{level:MAXLV,cur:Math.max(0,xp-acc),need:xpNeed(MAXLV),max:true};
+  return{level:l,cur:xp-acc,need};
+}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function touchStreak(){
+  const t=todayStr();if(state.streak.day===t)return;
+  const y=new Date(Date.now()-864e5);
+  const ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');
+  state.streak.count=(state.streak.day===ys)?state.streak.count+1:1;
+  state.streak.day=t;save();
+  if(state.streak.count%7===0){toast('🔥 '+state.streak.count+'日連続達成！');grantCard();}
+  else if(state.streak.count>=2)toast('🔥 '+state.streak.count+'日連続！');
+  checkAch();
+}
+function addXp(n){
+  const before=lvlInfo(state.xp).level;
+  state.xp+=n;const after=lvlInfo(state.xp).level;save();
+  if(after>before){
+    pop(20);setTimeout(()=>toast('🎉 Lv.'+after+'！「'+evoTitle(after).n+'」に到達！'),350);
+    if(after%2===0)grantCard();   // 偶数レベルのみ
+  }
+  checkAch();
+}
+function unlock(id){
+  if(state.ach.includes(id))return;
+  state.ach.push(id);save();
+  const a=achAll().find(x=>x.id===id);
+  setTimeout(()=>toast((isSecret(id)?'🕵️ 隠し実績を発見: ':'🏅 実績解除: ')+(a?a.name:id)),700);
+  grantCard();
+}
+function iboCorrect(){let n=0;Q.forEach(q=>{if(q.lv==='ibo'&&state.stats[q.id])n+=state.stats[q.id].c;});return n;}
+function fieldCorrect(f){let n=0;Q.forEach(q=>{if(q.f===f&&state.stats[q.id])n+=state.stats[q.id].c;});return n;}
+function lvCorrect(lv){let n=0;Q.forEach(q=>{if(q.lv===lv&&state.stats[q.id])n+=state.stats[q.id].c;});return n;}
+function totalCorrect(){let n=0;Object.keys(state.stats).forEach(k=>n+=state.stats[k].c);return n;}
+function checkCardMilestone(){
+  if(!state.cardMile)state.cardMile=0;
+  const marks=[25,60,110,170,240,320,410,510,620,740,870,1010,1160,1320,1490,1670,1860,2060,2270,2490];
+  let due=0; marks.forEach(m=>{if(totalCorrect()>=m)due++;});
+  while(state.cardMile<due){state.cardMile++;grantCard();}
+  save();
+}
+function checkAch(){
+  const solved=Object.keys(state.stats).length;
+  const lv=lvlInfo(state.xp).level;
+  if(state.maxCombo>=5)unlock('combo5');
+  if(state.maxCombo>=10)unlock('combo10');
+  if(state.maxCombo>=20)unlock('combo20');
+  if(solved>=50)unlock('solve50');
+  if(solved>=100)unlock('solve100');
+  if(solved>=Q.length)unlock('solveall');
+  [['kanji','kanji50'],['goi','goi50'],['bunpo','bunpo50'],['koten','koten50']]
+    .forEach(([f,id])=>{if(fieldCorrect(f)>=50)unlock(id);});
+  if(lvCorrect('hard')>=50)unlock('hard50');
+  if(state.taBest>=15)unlock('ta15');
+  if(state.taBest>=20)unlock('ta20');
+  if(state.taBest>=30)unlock('ta30');
+  [[3,'streak3'],[7,'streak7'],[14,'streak14'],[30,'streak30']]
+    .forEach(([n,id])=>{if(state.streak.count>=n)unlock(id);});
+  [[5,'lv5'],[10,'lv10'],[20,'lv20']].forEach(([n,id])=>{if(lv>=n)unlock(id);});
+  const cn=cardsNormal().filter(c=>state.cards.includes(c.id)).length;
+  if(cn>=10)unlock('cards10');
+  if(cn>=30)unlock('cards30');
+  if(cn>=50)unlock('cards50');
+  if(cn>=cardsNormal().length)unlock('cards34');
+  if(CARDS.some(c=>c.r==='H'&&state.cards.includes(c.id)))unlock('secret');
+  if(!state.stat.fields)state.stat.fields=[];
+  if(state.stat.fields.length>=4)unlock('allfield');
+  const wk=weak().length;
+  if(wk>state.stat.peakWeak)state.stat.peakWeak=wk;
+  if(state.stat.peakWeak>=10&&wk===0)unlock('comeback');
+}
+
+const $=id=>document.getElementById(id);
+const screen=$('screen');
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1700)}
+function pop(n){const p=document.createElement('div');p.className='pop';const e=['⭐','✨','🎉','💫','🧬'];
+  for(let i=0;i<(n||8);i++){const s=document.createElement('span');s.textContent=e[i%5];
+    s.style.setProperty('--dx',(Math.random()*260-130)+'px');s.style.setProperty('--dy',(-Math.random()*200-40)+'px');p.appendChild(s)}
+  document.body.appendChild(p);setTimeout(()=>p.remove(),820)}
+function fieldName(f){const o=FIELDS.find(x=>x[0]===f);return o?o[1]:f}
+function pool(field,lv){return Q.filter(q=>(field==='all'||q.f===field)&&(lv==='all'||q.lv===lv))}
+function weak(){return Q.filter(q=>{const s=state.stats[q.id];return s&&s.w>0&&s.c<=s.w})}
+function rankOf(p){return p>=95?'S':p>=85?'A':p>=70?'B':p>=50?'C':'D'}
+
+const APP_VER='20260830b';
+function forceUpdate(){ location.replace(location.origin+location.pathname+'?v='+Date.now()); }
+async function checkUpdate(silent){
+  try{
+    const r=await fetch(location.origin+location.pathname+'?c='+Date.now(),{cache:'no-store'});
+    const t=await r.text();
+    const m=t.match(/const APP_VER='([^']+)'/);
+    if(m&&m[1]!==APP_VER){
+      const bar=document.getElementById('updBar');
+      if(bar){bar.style.display='flex';bar.querySelector('b').textContent='新しいバージョン '+m[1]+' があります';}
+      return true;
+    }
+    if(!silent)toast('最新版です（'+APP_VER+'）');
+    return false;
+  }catch(e){ if(!silent)toast('確認できませんでした'); return false; }
+}
+function exportProgress(){
+  return JSON.stringify({v:1,ver:APP_VER,d:{xp:state.xp,maxCombo:state.maxCombo,ach:state.ach,
+    cards:state.cards,stats:state.stats,best:state.best,streak:state.streak,
+    taBest:state.taBest,cardMile:state.cardMile,stat:state.stat}});
+}
+function copyProgress(){
+  const t=exportProgress();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>toast('コピーしました ✓')).catch(()=>selCopy());
+  }else selCopy();
+}
+function selCopy(){
+  const el=document.getElementById('bkText'); if(!el){toast('コピーできませんでした');return;}
+  el.removeAttribute('readonly'); el.select(); el.setSelectionRange(0,999999);
+  try{ document.execCommand('copy'); toast('コピーしました ✓'); }catch(e){ toast('長押しして手動でコピーしてください'); }
+  el.setAttribute('readonly','');
+}
+function importProgress(){
+  const raw=(document.getElementById('impText')||{}).value||'';
+  if(!raw.trim()){toast('貼り付けてから読み込んでください');return;}
+  let o; try{ o=JSON.parse(raw.trim()); }catch(e){ toast('形式が正しくありません'); return; }
+  const d=o&&o.d?o.d:null; if(!d){toast('進捗データが見つかりません');return;}
+  if(!confirm('いまの記録を、貼り付けた内容で置きかえます。よろしいですか？'))return;
+  state.xp=d.xp||0; state.maxCombo=d.maxCombo||0; state.ach=d.ach||[];
+  state.cards=d.cards||[]; state.stats=d.stats||{}; state.best=d.best||{};
+  state.streak=d.streak||{day:'',count:0}; state.taBest=d.taBest||0;
+  state.cardMile=d.cardMile||0; if(d.stat)state.stat=d.stat;
+  save(); toast('記録を復元しました ✓'); renderHome();
+}
+function renderBackup(){
+  const solved=Object.keys(state.stats).length;
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="qhead"><h2>💾 記録の保存</h2></div>
+    <p class="help" style="margin-bottom:12px">学習の記録はこの端末の中だけに保存されています。機種変更のときや、ホーム画面のアイコンを入れ直すときは、ここで書き出して持ち出せます。</p>
+    <div class="statcard" style="display:block;padding:16px">
+      <div style="font-size:12px;color:var(--sub);font-weight:700;margin-bottom:8px">いまの記録（${solved}問 / Lv.${lvlInfo(state.xp).level} / ${state.xp.toLocaleString()} XP）</div>
+      <textarea id="bkText" readonly style="width:100%;min-height:110px;font-size:11px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px">${exportProgress()}</textarea>
+      <button class="btn btn-primary" style="margin-top:10px" onclick="copyProgress()">📋 コピーする</button>
+    </div>
+    <p class="help" style="margin:14px 0 8px">▼ 別の端末やアイコンで復元する場合は、上でコピーした内容をここに貼り付けます。</p>
+    <div class="statcard" style="display:block;padding:16px">
+      <textarea id="impText" placeholder="ここに貼り付け" style="width:100%;min-height:90px;font-size:11px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px"></textarea>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="importProgress()">読み込む</button>
+    </div>
+    <p class="help" style="margin-top:10px">読み込むと、いまの記録は置きかえられます。</p>`;
+}
+function renderHome(){
+  const ids=Object.keys(state.stats);
+  const solved=ids.length;
+  let c=0,t=0;
+  ids.forEach(k=>{c+=state.stats[k].c;t+=state.stats[k].c+state.stats[k].w});
+  const rate=t?Math.round(c/t*100):0;
+  const C=2*Math.PI*40,off=C*(1-solved/Q.length);
+  $('rankPill').textContent='総合 '+(t?rankOf(rate):'--');
+  const lvs=['all','easy','std','hard'].map(k=>{
+    const n=k==='all'?'すべて':LV[k].n, d=k==='all'?'全レベル':LV[k].d;
+    return `<div class="lvbtn ${curLv===k?'on':''}" onclick="setLv('${k}')"><span class="n">${n}</span><span class="d">${d}</span></div>`;
+  });
+  // 4つ並ぶので grid を4分割に
+  const fs=FIELDS.map(([id,name])=>{
+    const all=pool(id,curLv).length;
+    const done=pool(id,curLv).filter(q=>state.stats[q.id]).length;
+    const pct=all?Math.round(done/all*100):0;
+    return `<div class="fbtn" onclick="startQuiz('${id}')"><div class="ic">${FICON[id]||'🧫'}</div>
+      <div class="n">${name}</div><div class="m">${all}問中 ${done}問クリア</div>
+      <div class="bar"><i style="width:${pct}%"></i></div></div>`;
+  }).join('');
+  const wk=weak().length;
+  screen.innerHTML=`
+    <div class="statcard">
+      <div class="ring"><svg width="92" height="92">
+        <circle cx="46" cy="46" r="40" fill="none" stroke="var(--border)" stroke-width="9"/>
+        <circle cx="46" cy="46" r="40" fill="none" stroke="var(--primary)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/>
+      </svg><div class="in"><b>${solved}</b><small>/${Q.length}問</small></div></div>
+      <div class="stinfo"><h2>学習のきろく</h2>
+        <div class="row"><div>正答率<b>${rate}%</b></div><div>ランク<b>${t?rankOf(rate):'--'}</b></div></div></div>
+    </div>
+    <div class="statcard" style="padding:14px 20px;gap:12px;cursor:pointer" onclick="renderTitles()">
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+          <span style="font-family:Poppins;font-weight:800;font-size:18px;color:var(--accent)">Lv.${lvlInfo(state.xp).level}</span> <span style="font-size:12px;font-weight:800;color:var(--primary)">${evoTitle(lvlInfo(state.xp).level).e} ${evoTitle(lvlInfo(state.xp).level).n}</span>
+          <span style="font-size:11px;color:var(--sub);font-weight:700">${state.streak.count>=2?'🔥 '+state.streak.count+'日連続 ›':'ことばの記録 ›'}</span>
+        </div>
+        <div class="bar-top" style="margin:0 0 4px"><i style="width:${lvlInfo(state.xp).max?100:lvlInfo(state.xp).cur/lvlInfo(state.xp).need*100}%"></i></div>
+        <div style="font-size:10px;color:var(--sub);font-weight:700;text-align:right">${lvlInfo(state.xp).max?'最高到達！ 累計 '+state.xp.toLocaleString()+' XP':'あと '+(lvlInfo(state.xp).need-lvlInfo(state.xp).cur).toLocaleString()+' XP でレベルアップ'}</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center" onclick="renderZukan()"><span>📖 ことばの図鑑</span><span style="font-family:Poppins;font-weight:800;color:var(--accent)">${cardsNormal().filter(c=>state.cards.includes(c.id)).length}/${cardsNormal().length}</span></button>
+    <div class="statcard" style="display:block;padding:16px 18px">
+      <h2 style="font-size:13px;font-weight:900;margin-bottom:10px">📊 難易度べつのきろく</h2>
+      ${['easy','std','hard'].map(k=>{
+        const qs=Q.filter(q=>q.lv===k);
+        const done=qs.filter(q=>state.stats[q.id]).length;
+        let c=0,t=0;qs.forEach(q=>{const st=state.stats[q.id];if(st){c+=st.c;t+=st.c+st.w;}});
+        const rate=t?Math.round(c/t*100):0;
+        const pct=qs.length?done/qs.length*100:0;
+        return `<div class="lvstat"><span class="ln lv-${k}">${LV[k].n}</span><div class="lb"><i class="lv-${k}" style="width:${pct}%"></i></div><span class="lnum">${done}/${qs.length}</span><span class="lrate">${t?rate+'%':'--'}</span></div>`;
+      }).join('')}
+    </div>
+    <div class="label">🎚 難易度をえらぶ</div>
+    <div class="lvrow" style="grid-template-columns:repeat(4,1fr)">${lvs.join('')}</div>
+    <div class="label">⚔️ チャレンジ</div>
+    <div class="row2" style="margin-bottom:10px">
+      <button class="btn btn-primary" onclick="startQuiz('all')">🎲 ミックス10問</button>
+      <button class="btn btn-accent" onclick="startQuiz('all',true)">⏱ タイムアタック（60秒）</button>
+    </div>
+    ${wk?`<button class="btn btn-ghost" style="margin-bottom:10px" onclick="startQuiz('weak')">🔁 苦手だけ復習（${wk}問）</button>`:''}
+    <div class="label">🧫 分野べつ</div>
+    <div class="fields">${fs}</div>
+    <div class="label">🏅 実績（${ACH.filter(a=>state.ach.includes(a.id)).length}/${ACH.length}）</div>
+    <div class="ach-grid">
+      ${ACH.map(a=>{const got=state.ach.includes(a.id);
+        return `<div class="achb ${got?'got':''}"><div class="an">${got?'🏅':'🔒'} ${a.name}</div><div class="ad">${a.desc}</div></div>`;}).join('')}
+    </div>
+    ${(()=>{const f=ACH_SECRET.filter(a=>state.ach.includes(a.id));
+      return f.length?`<div class="label">🕵️ 隠し実績（${f.length}）</div><div class="ach-grid">${
+        f.map(a=>`<div class="achb got" style="border-color:#5A68D8"><div class="an">🕵️ ${a.name}</div><div class="ad">${a.desc}</div></div>`).join('')}</div>`:'';})()}
+    <p class="help">難易度を選ぶと、分野べつ・ミックスの出題がそのレベルにしぼられるよ。XPは難しい問題ほど多くもらえる（入試レベルは1問14XP）。</p>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-ghost" style="flex:1;font-size:12px;padding:11px" onclick="checkUpdate(false)">🔄 更新を確認</button>
+      <button class="btn btn-ghost" style="flex:1;font-size:12px;padding:11px" onclick="renderBackup()">💾 記録の保存</button>
+    </div>
+    <p class="help" style="text-align:center;margin-top:8px;opacity:.6">バージョン ${APP_VER}</p>`;
+}
+function setLv(k){curLv=k;renderHome();}
+function renderTitles(){
+  const lv=lvlInfo(state.xp).level;
+  const rows=EVO.map((t,i)=>{
+    const n=i+1, got=n<=lv, cur=n===lv;
+    const need=(()=>{let acc=0;for(let k=1;k<n;k++)acc+=xpNeed(k);return acc;})();
+    return `<div class="evr ${got?'got':''} ${cur?'cur':''}">
+      <span class="evn">${n}</span>
+      <span class="eve">${got?t.e:'🔒'}</span>
+      <div class="evb">
+        <div class="evt">${got?esc(t.n):'？？？'}</div>
+        <div class="evd">${cur?'いまここ':got?'到達済み':'必要 '+need.toLocaleString()+' XP'}</div>
+      </div>
+    </div>`;
+  }).join('');
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ 戻る</button>
+    <div class="qhead"><h2>✒️ ことばの記録</h2><span class="combo" style="color:var(--accent)">${lv}/${EVO.length}</span></div>
+    <p class="help" style="margin-bottom:12px">レベルが上がるたびに称号が変わる。文字を覚えることから始まり、言葉の背景と古典の世界へ分け入っていく。</p>
+    ${rows}
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="renderHome()">ホームに戻る</button>`;
+}
+function renderZukan(){
+  const have=new Set(state.cards);
+  const norm=cardsNormal();
+  const got=norm.filter(c=>have.has(c.id)).length;
+  const sec=(r,label)=>{
+    const cs=CARDS.filter(c=>c.r===r);
+    return `<div class="label">${label}（${cs.filter(c=>have.has(c.id)).length}/${cs.length}）</div>`+
+      cs.map(c=>have.has(c.id)
+        ?`<div class="zkr got"><span class="zke">${c.e}</span><div class="zkb"><div class="zkn">${c.n} <span class="zktag ${c.r}">${c.r==='SR'?'超レア':c.r==='R'?'レア':'ふつう'}</span></div><div class="zkd">${c.d}</div></div></div>`
+        :`<div class="zkr"><span class="zke">🔒</span><div class="zkb"><div class="zkn" style="color:var(--sub)">？？？</div><div class="zkd">レベルアップ・実績・正解数の節目で手に入る</div></div></div>`).join('');
+  };
+  const hid=CARDS.filter(c=>c.r==='H'&&have.has(c.id));
+  const hidSec=hid.length?`<div class="label">🔮 隠し図鑑（${hid.length}）</div>`+
+    hid.map(c=>`<div class="zkr got" style="border-color:#5A68D8"><span class="zke">${c.e}</span><div class="zkb"><div class="zkn">${c.n} <span class="zktag H">隠し</span></div><div class="zkd">${c.d}</div></div></div>`).join(''):'';
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ 戻る</button>
+    <div class="qhead"><h2>📖 ことばの図鑑</h2><span class="combo" style="color:var(--accent)">${got}/${norm.length} 発見</span></div>
+    ${got>=norm.length?'<div class="statcard" style="justify-content:center"><b style="color:var(--accent)">🏆 コンプリート！</b></div>':''}
+    <p class="help" style="margin-bottom:10px">漢字や言葉の由来にまつわる豆知識を集める図鑑。レベルアップ（2つごと）・実績解除・正解数の節目・7日連続学習で手に入る。</p>
+    ${hidSec}
+    ${sec('SR','⭐ 超レア')}
+    ${sec('R','🔹 レア')}
+    ${sec('N','・ ふつう')}`;
+}
+
+let g={list:[],i:0,score:0,miss:[],answered:false,combo:0,maxCombo:0,ta:false,t:0,timer:null,field:'all'};
+function startQuiz(field,ta){
+  let list;
+  if(field==='weak'){list=shuffle(weak());if(!list.length){toast('苦手はまだないよ');return;}list=list.slice(0,10);}
+  else{list=pool(field,curLv);
+    if(list.length<4){toast('この条件の問題が足りないよ');return;}
+    list=shuffle(list).slice(0,ta?40:10);}
+  g={list,i:0,score:0,miss:[],answered:false,combo:0,maxCombo:0,ta:!!ta,t:ta?60:0,timer:null,field};
+  renderQuiz();
+}
+function renderQuiz(){
+  if(g.i>=g.list.length)return finish();
+  clearInterval(g.timer);
+  const q=g.list[g.i];g.answered=false;
+  const opts=shuffle(q.ch.map((c,k)=>({c,k})));
+  screen.innerHTML=`
+    <button class="back" onclick="quitQuiz()">‹ もどる</button>
+    <div class="qhead"><div class="left"><h2>${g.ta?'⏱ タイムアタック':'📝 クイズ'}</h2>
+      ${g.combo>=2?`<span class="combo">🔥 ${g.combo}コンボ</span>`:''}</div>
+      ${g.ta?`<span class="timer" id="tm">${g.t}</span>`:`<span class="combo">${g.i+1}/${g.list.length}</span>`}</div>
+    <div class="bar-top"><i style="width:${g.i/g.list.length*100}%"></i></div>
+    <div class="qcard">
+      <div class="qmeta"><span class="tagf">${esc(fieldName(q.f))}</span><span class="taglv ${q.lv}">${LV[q.lv].n}</span></div>
+      <div class="qtext">${esc(q.q)}</div>
+    </div>
+    <div class="choices">${opts.map(o=>`<button class="choice" data-k="${o.k}" onclick="answer(${o.k})">${esc(o.c)}</button>`).join('')}</div>
+    <div id="fb"></div>`;
+  if(g.ta){g.timer=setInterval(()=>{g.t--;const el=$('tm');
+    if(el){el.textContent=g.t;if(g.t<=5)el.classList.add('warn');}
+    if(g.t<=0){clearInterval(g.timer);g.answered=true;finish();}},1000);}
+}
+function answer(k){
+  if(g.answered)return;g.answered=true;clearInterval(g.timer);
+  const q=g.list[g.i],ok=k===q.a;
+  document.querySelectorAll('.choice').forEach(b=>{const kk=+b.dataset.k;
+    if(kk===q.a)b.classList.add('correct');else if(kk===k)b.classList.add('wrong');else b.classList.add('dim');b.onclick=null;});
+  const st=state.stats[q.id]||{c:0,w:0};
+  bumpQ();
+  if(ok)setTimeout(checkCardMilestone,50);
+  if(!state.stat.fields)state.stat.fields=[];
+  if(!state.stat.fields.includes(q.f)){state.stat.fields.push(q.f);}
+  if(ok){g.score++;g.combo++;g.maxCombo=Math.max(g.maxCombo,g.combo);
+    if(g.combo>state.maxCombo)state.maxCombo=g.combo;
+    st.c++;
+    addXp(XPLV[q.lv]+(g.combo>=5?10:g.combo>=3?5:0));touchStreak();
+    pop(g.combo>=3?14:8);}
+  else{g.combo=0;g.miss.push(q);st.w++;}
+  state.stats[q.id]=st;save();
+  const head=k===-1?'⏰ 時間切れ':(ok?'⭕ 正解':'❌ 不正解');
+  $('fb').innerHTML=`<div class="exp"><b>${head}</b>　${esc(q.ex)}</div>
+    <button class="btn btn-primary" style="margin-top:12px" onclick="next()">次へ ›</button>`;
+  $('fb').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function next(){g.i++;renderQuiz();}
+function quitQuiz(){clearInterval(g.timer);renderHome();}
+function finish(){
+  clearInterval(g.timer);
+  const total=g.list.length,rate=Math.round(g.score/total*100),rk=rankOf(rate);
+  const key=(g.field||'all')+'_'+curLv+(g.ta?'_ta':'');
+  const prev=state.best[key]||0;const isBest=g.score>prev;
+  if(isBest){state.best[key]=g.score;save();}
+  unlock('first');
+  if(g.ta&&g.score>state.taBest){state.taBest=g.score;save();}
+  if(!g.ta&&total>=10&&g.score===total)unlock('perfect');
+  checkAch();
+  const msg={S:'完璧！文句なし',A:'すばらしい理解度',B:'いい調子、あと少し',C:'解説を読んで固めよう',D:'まずは易しめから'}[rk];
+  const miss=g.miss.length?`<div class="label" style="margin-top:4px">まちがえた問題</div>
+    <div class="misslist">${g.miss.map(q=>`<div class="r"><div class="q">${esc(q.q)}</div><div class="a">正解: ${esc(q.ch[q.a])}</div></div>`).join('')}</div>`:'';
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="result">
+      <div class="rank">${rk}</div>
+      <div class="big">${g.score}<span style="font-size:22px;color:var(--sub)">/${total}</span></div>
+      <h2>${msg}</h2>
+      <p>正答率 ${rate}% ／ 最大 ${g.maxCombo} コンボ</p>
+      ${isBest?'<p style="color:var(--accent);font-weight:800">🏅 自己ベスト更新！</p>':`<p>この条件のベスト: ${Math.max(prev,g.score)}問</p>`}
+    </div>
+    ${miss}
+    <div class="row2" style="margin-top:8px">
+      <button class="btn btn-ghost" onclick="renderHome()">ホーム</button>
+      <button class="btn btn-primary" onclick="startQuiz('${g.field}',${g.ta})">もう一回</button>
+    </div>`;
+  if(rate>=85)setTimeout(()=>pop(18),200);
+}
+renderHome();
+setTimeout(()=>checkUpdate(true),1500);
+</script>
+</body>
+</html>
