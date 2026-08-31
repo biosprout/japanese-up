@@ -679,7 +679,7 @@ let curLv='all';
 
 const XPLV={easy:8,std:10,hard:14};
 const ACH=[
- {id:'first',name:'はじめの一歩',desc:'クイズを1回クリア'},
+ {id:'first',name:'筆をとる',desc:'クイズを1回クリア'},
  {id:'combo5',name:'快調',desc:'5コンボ達成'},
  {id:'combo10',name:'筆が走る',desc:'10コンボ達成'},
  {id:'combo20',name:'一気呵成',desc:'20コンボ達成'},
@@ -687,24 +687,24 @@ const ACH=[
  {id:'solve50',name:'手習い',desc:'50問に挑戦'},
  {id:'solve100',name:'精進',desc:'100問に挑戦'},
  {id:'solveall',name:'全問踏破',desc:'すべての問題に挑戦'},
- {id:'kanji50',name:'漢字の使い手',desc:'漢字で50問正解'},
- {id:'goi50',name:'語彙の使い手',desc:'語彙で50問正解'},
- {id:'bunpo50',name:'文法の使い手',desc:'文法で50問正解'},
- {id:'koten50',name:'古典の使い手',desc:'古文・漢文で50問正解'},
- {id:'hard50',name:'入試レベル攻略',desc:'入試レベルで50問正解'},
+ {id:'kanji50',name:'説文解字をひもとく',desc:'漢字で50問正解'},
+ {id:'goi50',name:'言海をひく',desc:'語彙で50問正解'},
+ {id:'bunpo50',name:'係り結びを解く',desc:'文法で50問正解'},
+ {id:'koten50',name:'源氏五十四帖',desc:'古文・漢文で50問正解'},
+ {id:'hard50',name:'難問を読み解く',desc:'入試レベルで50問正解'},
  {id:'ta15',name:'速筆',desc:'タイムアタック15問'},
  {id:'ta20',name:'流麗',desc:'タイムアタック20問'},
  {id:'ta30',name:'筆神',desc:'タイムアタック30問'},
- {id:'streak3',name:'3日連続',desc:'3日連続で学習'},
+ {id:'streak3',name:'三日続いた',desc:'3日連続で学習'},
  {id:'streak7',name:'週間皆勤',desc:'7日連続で学習'},
  {id:'streak14',name:'継続は力',desc:'14日連続で学習'},
  {id:'streak30',name:'不撓不屈',desc:'30日連続で学習'},
- {id:'lv5',name:'Lv.5 到達',desc:'レベル5に到達'},
- {id:'lv10',name:'Lv.10 到達',desc:'レベル10に到達'},
- {id:'lv20',name:'Lv.20 到達',desc:'最高レベルに到達'},
- {id:'cards10',name:'収集家',desc:'図鑑を10種あつめる'},
- {id:'cards30',name:'蒐集家',desc:'図鑑を30種あつめる'},
- {id:'cards50',name:'大収集家',desc:'図鑑を50種あつめる'},
+ {id:'lv5',name:'初伝',desc:'レベル5に到達'},
+ {id:'lv10',name:'中伝',desc:'レベル10に到達'},
+ {id:'lv20',name:'皆伝',desc:'最高レベルに到達'},
+ {id:'cards10',name:'書棚のはじまり',desc:'図鑑を10種あつめる'},
+ {id:'cards30',name:'蔵書を重ねる',desc:'図鑑を30種あつめる'},
+ {id:'cards50',name:'文庫をなす',desc:'図鑑を50種あつめる'},
  {id:'cards34',name:'言葉の館長',desc:'図鑑をコンプリート'},
 ];
 const ACH_SECRET=[
@@ -716,8 +716,8 @@ const ACH_SECRET=[
  {id:'secret',name:'言霊',desc:'隠し図鑑を手に入れた'},
  {id:'vperfect',name:'読みの達人',desc:'読みを書くで全問正解した'},
  {id:'vread10',name:'筆まめ',desc:'読みを書くを10回やった'},
- {id:'daily7',name:'日課',desc:'今日の10問を7回やりきった'},
- {id:'daily30',name:'習慣化',desc:'今日の10問を30回やりきった'},
+ {id:'daily7',name:'習慣の芽',desc:'今日の10問を7回やりきった'},
+ {id:'daily30',name:'根づいた習慣',desc:'今日の10問を30回やりきった'},
 ];
 function achAll(){return ACH.concat(ACH_SECRET);}
 function isSecret(id){return ACH_SECRET.some(a=>a.id===id);}
@@ -819,7 +819,7 @@ function pool(field,lv){return Q.filter(q=>(field==='all'||q.f===field)&&(lv==='
 function weak(){return Q.filter(q=>{const s=state.stats[q.id];return s&&s.w>0&&s.c<=s.w})}
 function rankOf(p){return p>=95?'S':p>=85?'A':p>=70?'B':p>=50?'C':'D'}
 
-const APP_VER='20260831e';
+const APP_VER='20260831f';
 function forceUpdate(){ location.replace(location.origin+location.pathname+'?v='+Date.now()); }
 async function checkUpdate(silent){
   try{
