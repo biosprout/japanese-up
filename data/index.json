@@ -1,0 +1,1 @@
+{"version":1,"sets":[{"id":"kanji","name":"漢字の読み","file":"kanji.json","count":140},{"id":"yoji","name":"四字熟語","file":"yoji.json","count":50},{"id":"kotowaza","name":"ことわざ・慣用句","file":"kotowaza.json","count":55},{"id":"kobun","name":"古文単語","file":"kobun.json","count":50}],"total":295}

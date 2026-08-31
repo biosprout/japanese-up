@@ -60,6 +60,31 @@
   .daily .dbar i{display:block;height:100%;background:currentColor;border-radius:99px}
   .daily .dgo{font-size:12px;font-weight:800;background:rgba(255,255,255,.22);
     padding:8px 12px;border-radius:999px;flex:0 0 auto;white-space:nowrap}
+  .vword{font-size:34px;font-weight:900;text-align:center;line-height:1.4;margin:6px 0 4px;letter-spacing:2px}
+  .vword.sm{font-size:24px;letter-spacing:1px}
+  .vsub{font-size:12px;color:var(--sub);font-weight:700;text-align:center}
+  .vin{width:100%;margin-top:16px;padding:15px 14px;border:2px solid var(--border);border-radius:14px;
+    font-size:22px;font-weight:800;text-align:center;background:var(--panel2);color:var(--text);
+    font-family:inherit;outline:none;-webkit-appearance:none}
+  .vin:focus{border-color:var(--primary)}
+  .vin.ok{border-color:var(--primary);background:#EAF6EE}
+  .vin.ng{border-color:var(--danger);background:#FDECEE}
+  .vhint{margin-top:10px;font-size:15px;font-weight:800;letter-spacing:4px;color:var(--sub);text-align:center;min-height:22px}
+  .vcard{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:34px 18px;
+    box-shadow:var(--shadow);margin-bottom:14px;cursor:pointer;min-height:180px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+  .vcard .mean{font-size:17px;font-weight:700;line-height:1.7;text-align:center}
+  .vcard .tap{font-size:11px;color:var(--sub);font-weight:700}
+  .vtag{display:inline-block;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;
+    background:var(--panel2);color:var(--sub)}
+  .catrow{display:flex;align-items:center;font-size:12px;font-weight:700;padding:7px 0;border-bottom:1px solid var(--border)}
+  .catrow:last-child{border:0}
+  .catrow .cn{flex:0 0 auto;max-width:52%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .catbar{height:6px;border-radius:99px;background:var(--border);overflow:hidden;flex:1;margin:0 10px}
+  .catbar i{display:block;height:100%;border-radius:99px;background:var(--primary)}
+  .catbar i.bad{background:var(--danger)}
+  .catbar i.mid{background:var(--accent)}
+  .catrow .cv{font-family:'Poppins';flex:0 0 auto;color:var(--sub)}
   .label{font-size:12px;font-weight:800;color:var(--sub);margin:10px 2px 10px;letter-spacing:.3px}
   .lvrow{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:6px}
   .lvbtn{background:var(--panel);border:1.5px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:.15s}
@@ -501,6 +526,9 @@ if(!state.ach)state.ach=[];
 if(!state.streak)state.streak={day:'',count:0};
 if(state.taBest==null)state.taBest=0;
 if(!state.stat)state.stat={day:'',dayQ:0,fields:[],peakWeak:0};
+if(!state.vstat)state.vstat={};
+if(state.vreadDone==null)state.vreadDone=0;
+if(state.dailyDone==null)state.dailyDone=0;
 function bumpQ(){
   const t=todayStr();
   if(state.stat.day!==t){state.stat.day=t;state.stat.dayQ=0;}
@@ -686,6 +714,8 @@ const ACH_SECRET=[
  {id:'allfield',name:'四分野制覇',desc:'4分野すべてで学習した'},
  {id:'comeback',name:'捲土重来',desc:'苦手を10問ためてから0にした'},
  {id:'secret',name:'言霊',desc:'隠し図鑑を手に入れた'},
+ {id:'vperfect',name:'読みの達人',desc:'読みを書くで全問正解した'},
+ {id:'vread10',name:'筆まめ',desc:'読みを書くを10回やった'},
  {id:'daily7',name:'日課',desc:'今日の10問を7回やりきった'},
  {id:'daily30',name:'習慣化',desc:'今日の10問を30回やりきった'},
 ];
@@ -744,6 +774,7 @@ function checkCardMilestone(){
 function checkAch(){
   const solved=Object.keys(state.stats).length;
   const lv=lvlInfo(state.xp).level;
+  if((state.vreadDone||0)>=10)unlock('vread10');
   if((state.dailyDone||0)>=7)unlock('daily7');
   if((state.dailyDone||0)>=30)unlock('daily30');
   if(state.maxCombo>=5)unlock('combo5');
@@ -788,7 +819,7 @@ function pool(field,lv){return Q.filter(q=>(field==='all'||q.f===field)&&(lv==='
 function weak(){return Q.filter(q=>{const s=state.stats[q.id];return s&&s.w>0&&s.c<=s.w})}
 function rankOf(p){return p>=95?'S':p>=85?'A':p>=70?'B':p>=50?'C':'D'}
 
-const APP_VER='20260831a';
+const APP_VER='20260831d';
 function forceUpdate(){ location.replace(location.origin+location.pathname+'?v='+Date.now()); }
 async function checkUpdate(silent){
   try{
@@ -807,7 +838,8 @@ async function checkUpdate(silent){
 function exportProgress(){
   return JSON.stringify({v:1,ver:APP_VER,d:{xp:state.xp,maxCombo:state.maxCombo,ach:state.ach,
     cards:state.cards,cardCount:state.cardCount,stats:state.stats,best:state.best,streak:state.streak,
-    taBest:state.taBest,cardMile:state.cardMile,stat:state.stat}});
+    taBest:state.taBest,cardMile:state.cardMile,stat:state.stat,
+    vstat:state.vstat,vreadDone:state.vreadDone,dailyDone:state.dailyDone}});
 }
 function copyProgress(){
   const t=exportProgress();
@@ -831,6 +863,8 @@ function importProgress(){
   state.cards=d.cards||[]; state.stats=d.stats||{}; state.best=d.best||{};
   state.streak=d.streak||{day:'',count:0}; state.taBest=d.taBest||0;
   state.cardMile=d.cardMile||0; if(d.stat)state.stat=d.stat;
+  state.vstat=d.vstat||{}; state.vreadDone=d.vreadDone||0; state.dailyDone=d.dailyDone||0;
+  state.daily=null;
   save(); toast('記録を復元しました ✓'); renderHome();
 }
 function renderBackup(){
@@ -912,6 +946,14 @@ function renderHome(){
       <button class="btn btn-primary" onclick="startQuiz('all')">🎲 ミックス10問</button>
       <button class="btn btn-accent" onclick="startQuiz('all',true)">⏱ タイムアタック（60秒）</button>
     </div>
+    <div class="label">📖 語彙${vLoad==='ok'?`（${V.length}語）`:vLoad==='loading'?'（読み込み中…）':'（読み込めませんでした）'}</div>
+    ${vLoad==='fail'?`<p class="help" style="margin-bottom:10px">語彙データ（dataフォルダ）が見つかりません。
+      index.html と同じ場所に data フォルダを置いて、Webサーバー経由で開いてください。他の学習はそのまま使えます。</p>`:`
+    <div class="row2" style="margin-bottom:10px">
+      <button class="btn btn-primary" ${vLoad==='ok'?'':'style="opacity:.55"'} onclick="startVRead()">🖊 読みを書く</button>
+      <button class="btn btn-ghost" ${vLoad==='ok'?'':'style="opacity:.55"'} onclick="startVCard()">🃏 意味カード</button>
+    </div>`}
+    <div class="label">⚔️ チャレンジ</div>
     ${wk?`<button class="btn btn-ghost" style="margin-bottom:10px" onclick="startQuiz('weak')">🔁 苦手だけ復習（${wk}問）</button>`:''}
     <div class="label">🧫 分野べつ</div>
     <div class="fields">${fs}</div>
@@ -978,6 +1020,206 @@ function renderZukan(){
 }
 
 let g={list:[],i:0,score:0,miss:[],answered:false,combo:0,maxCombo:0,ta:false,t:0,timer:null,field:'all'};
+/* ===================== 語彙（読みを書く・意味カード） ===================== */
+/* 語彙データは data/*.json から読み込む。
+   本体（4択問題）は index.html に入っているので、読み込めなくてもアプリは動く。 */
+const VDIR='data/';
+let V=[], VMETA=null, VREAD=[], VMEAN=[], vLoad='loading';
+async function loadVocab(){
+  try{
+    const idx=await (await fetch(VDIR+'index.json',{cache:'no-cache'})).json();
+    const parts=await Promise.all(idx.sets.map(async st=>{
+      const doc=await (await fetch(VDIR+st.file,{cache:'no-cache'})).json();
+      return doc.items.map(o=>Object.assign({c:st.id},o));
+    }));
+    VMETA=idx; V=[].concat.apply([],parts);
+    VREAD=V.filter(v=>v.r); VMEAN=V.filter(v=>v.m);
+    vLoad=V.length?'ok':'empty';
+  }catch(e){ vLoad='fail'; }
+  if(document.querySelector('.statcard'))renderHome();   // ホーム表示中なら語数を出し直す
+}
+const VCN={kanji:'漢字の読み',yoji:'四字熟語',kotowaza:'ことわざ・慣用句',kobun:'古文単語'};
+const V_N=20;
+function vName(c){
+  const st=VMETA&&VMETA.sets.find(x=>x.id===c);
+  return (st&&st.name)||VCN[c]||c;
+}
+function vNorm(x){return String(x||'').trim().replace(/\s/g,'')
+  .replace(/[ァ-ヶ]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0x60));}  // カタカナで書いても正解にする
+function vOk(v,input){
+  const t=vNorm(input);
+  if(!t)return false;
+  if(t===vNorm(v.r))return true;
+  return (v.alt||[]).some(a=>t===vNorm(a));
+}
+function vScore(v,today){
+  const s=state.vstat[v.i];
+  if(!s||(s.c+s.w)===0)return 40;
+  const el=Math.max(0,s.d?today-s.d:60);
+  if(s.w>0&&s.c<=s.w)return 100+Math.min(s.wd?today-s.wd:el,30)*2;
+  const k=Math.max(0,Math.min(5,s.c-s.w*2)),iv=[1,2,4,8,16,32][k];
+  const due=el-iv;
+  return due>=0?60+Math.min(due,30):15+due;
+}
+function vPick(pool,n){
+  const today=dayNum();
+  const sc=pool.map(v=>({v:v,s:vScore(v,today)+Math.random()*6})).sort((a,b)=>b.s-a.s);
+  return shuffle(sc.slice(0,Math.max(n,Math.min(pool.length,n))).map(x=>x.v)).slice(0,n);
+}
+function vMark(v,ok){
+  const s=state.vstat[v.i]||{c:0,w:0};
+  if(ok)s.c++; else {s.w++;s.wd=dayNum();}
+  s.d=dayNum(); state.vstat[v.i]=s; save();
+}
+
+/* ----- 読みを書く ----- */
+let vr={list:[],i:0,score:0,miss:[],answered:false,hint:0,combo:0,maxCombo:0};
+function startVRead(){
+  if(!vGuard())return;
+  const list=vPick(VREAD,Math.min(V_N,VREAD.length));
+  if(list.length<3){toast('語彙データが足りないよ');return;}
+  vr={list:list,i:0,score:0,miss:[],answered:false,hint:0,combo:0,maxCombo:0,t0:Date.now()};
+  renderVRead();
+}
+function vHintText(v){
+  const r=v.r;
+  if(vr.hint<=0)return '';
+  if(vr.hint===1)return r.length+' 文字';
+  if(vr.hint===2)return r[0]+'○'.repeat(r.length-1);
+  return r.split('').map((ch,k)=>k%2===0?ch:'○').join('');
+}
+function renderVRead(){
+  if(vr.i>=vr.list.length)return renderVReadResult();
+  const v=vr.list[vr.i];
+  const cls=vr.answered?(vOk(v,($('vinp')||{}).value||vr.last)?'vin ok':'vin ng'):'vin';
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="qhead"><div class="left"><h2>🖊 読みを書く</h2>
+      ${vr.combo>=2?`<span class="combo">🔥 ${vr.combo}コンボ</span>`:''}</div>
+      <span class="combo">${vr.i+1}/${vr.list.length}</span></div>
+    <div class="bar-top"><i style="width:${vr.i/vr.list.length*100}%"></i></div>
+    <div class="qcard">
+      <div style="text-align:center"><span class="vtag">${vName(v.c)}</span></div>
+      <div class="vword ${v.w.length>6?'sm':''}">${esc(v.w)}</div>
+      ${v.h?`<div class="vsub" style="margin-bottom:3px">（${esc(v.h)}）</div>`:''}
+      <div class="vsub">読みをひらがなで書こう</div>
+      <input class="${cls}" id="vinp" type="text" inputmode="text" autocomplete="off"
+        autocapitalize="off" spellcheck="false" value="${esc(vr.last||'')}"
+        ${vr.answered?'disabled':''} onkeydown="if(event.key==='Enter')vSubmit()">
+      <div class="vhint">${esc(vHintText(v))}</div>
+    </div>
+    ${vr.answered?vReadFb():`
+    <div class="row2">
+      ${vr.hint>=3?`<button class="btn btn-ghost" style="opacity:.5" onclick="toast('ヒントはここまで')">💡 ヒントはここまで</button>`
+                  :`<button class="btn btn-ghost" onclick="vHint()">💡 ヒント（あと${3-vr.hint}回）</button>`}
+      <button class="btn btn-primary" onclick="vSubmit()">こたえる</button>
+    </div>`}`;
+  const el=$('vinp'); if(el&&!vr.answered)el.focus();
+}
+function vHint(){ if(vr.answered)return; vr.last=($('vinp')||{}).value||''; if(vr.hint<3)vr.hint++; renderVRead(); }
+function vSubmit(){
+  if(vr.answered)return;
+  const val=($('vinp')||{}).value||'';
+  if(!val.trim()){toast('ひらがなで書いてね');return;}
+  vr.answered=true; vr.last=val;
+  const v=vr.list[vr.i],ok=vOk(v,val);
+  bumpQ();
+  if(ok){vr.score++;vr.combo++;vr.maxCombo=Math.max(vr.maxCombo,vr.combo);
+    if(vr.combo>state.maxCombo)state.maxCombo=vr.combo;
+    addXp((vr.hint>=2?8:vr.hint===1?12:15)+(vr.combo>=5?10:vr.combo>=3?5:0));
+    touchStreak();pop(vr.combo>=3?14:8);}
+  else{vr.combo=0;vr.miss.push(v);}
+  vMark(v,ok);checkAch();renderVRead();
+}
+function vReadFb(){
+  const v=vr.list[vr.i],ok=vOk(v,vr.last);
+  return `<div class="exp"><b>${ok?'⭕ 正解':'❌ 正解は「'+esc(v.r)+'」'}</b>${
+    (v.alt&&v.alt.length)?'　（'+v.alt.map(esc).join('・')+' も可）':''}${v.m?'　'+esc(v.m):(v.h?'　'+esc(v.h):'')}</div>
+    <div class="row2" style="margin-top:12px">
+      ${ok?'':`<button class="btn btn-ghost" onclick="vRetry()">もう一度書く</button>`}
+      <button class="btn btn-primary" onclick="vNext()">次へ ›</button></div>`;
+}
+function vRetry(){ vr.answered=false; vr.last=''; vr.hint=2; renderVRead(); }
+function vNext(){ vr.i++; vr.answered=false; vr.hint=0; vr.last=''; renderVRead(); }
+function renderVReadResult(){
+  const total=vr.list.length,rate=Math.round(vr.score/total*100),rk=rankOf(rate);
+  state.vreadDone=(state.vreadDone||0)+1;
+  unlock('first');
+  if(vr.score===total&&total>=10)unlock('vperfect');
+  save();checkAch();
+  const per={};
+  vr.list.forEach(v=>{per[v.c]=per[v.c]||{n:0,ng:0};per[v.c].n++;});
+  vr.miss.forEach(v=>{if(per[v.c])per[v.c].ng++;});
+  const rows=Object.keys(per).map(c=>{const r=per[c],ok=r.n-r.ng,p=ok/r.n*100;
+    return `<div class="catrow"><span class="cn">${vName(c)}</span>
+      <span class="catbar"><i class="${p<50?'bad':p<100?'mid':''}" style="width:${p}%"></i></span>
+      <span class="cv">${ok}/${r.n}</span></div>`;}).join('');
+  const miss=vr.miss.length?`<div class="label" style="margin-top:4px">まちがえた語</div>
+    <div class="misslist">${vr.miss.map(v=>`<div class="r"><div class="q">${esc(v.w)}　${esc(v.r)}</div>
+      ${v.m?`<div class="a">${esc(v.m)}</div>`:''}</div>`).join('')}</div>`:'';
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="result"><div class="rank">${rk}</div>
+      <div class="big">${vr.score}<span style="font-size:22px;color:var(--sub)">/${total}</span></div>
+      <h2>${rate===100?'全問正解！':rate>=80?'いい調子！':rate>=50?'ここが伸びしろ':'くりかえしが力になるよ'}</h2>
+      <p>正答率 ${rate}% ／ 最大 ${vr.maxCombo} コンボ</p></div>
+    <div class="label">📊 種類べつ</div>
+    <div class="statcard" style="display:block;padding:12px 16px">${rows}</div>
+    ${miss}
+    <p class="help" style="text-align:center;margin:10px 0 0">まちがえた語は、日をおいてまた出てくるよ</p>
+    <div class="row2" style="margin-top:10px">
+      <button class="btn btn-ghost" onclick="renderHome()">ホーム</button>
+      <button class="btn btn-primary" onclick="startVRead()">もう一度</button></div>`;
+}
+
+/* ----- 意味カード ----- */
+let vc={list:[],i:0,flip:false};
+function vGuard(){
+  if(vLoad==='ok')return true;
+  if(vLoad==='loading'){toast('語彙を読み込み中。少し待ってね');return false;}
+  toast('語彙データを読み込めませんでした');
+  return false;
+}
+function startVCard(){
+  if(!vGuard())return;
+  const list=vPick(VMEAN,Math.min(V_N,VMEAN.length));
+  if(!list.length){toast('語彙データが足りないよ');return;}
+  vc={list:list,i:0,flip:false};
+  renderVCard();
+}
+function renderVCard(){
+  const v=vc.list[vc.i];
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="qhead"><div class="left"><h2>🃏 意味カード</h2></div>
+      <span class="combo">${vc.i+1}/${vc.list.length}</span></div>
+    <div class="bar-top"><i style="width:${(vc.i+1)/vc.list.length*100}%"></i></div>
+    <div class="vcard" onclick="vFlip()">
+      <span class="vtag">${vName(v.c)}</span>
+      ${vc.flip?`<div class="mean">${esc(v.m)}</div>${v.r?`<div class="vsub">${esc(v.w)}（${esc(v.r)}）</div>`:`<div class="vsub">${esc(v.w)}</div>`}`
+              :`<div class="vword ${v.w.length>6?'sm':''}">${esc(v.w)}</div>`}
+      <span class="tap">${vc.flip?'タップで戻る':'タップで意味'}</span>
+    </div>
+    <div class="row2">
+      <button class="btn btn-primary" onclick="vCardMark(true)">✓ わかった</button>
+      <button class="btn btn-ghost" onclick="vCardMark(false)">まだ</button>
+    </div>
+    <div class="row2" style="margin-top:8px">
+      <button class="btn btn-ghost" onclick="vMove(-1)">‹ 前</button>
+      <button class="btn btn-ghost" onclick="vMove(1)">次 ›</button>
+    </div>`;
+}
+function vFlip(){ vc.flip=!vc.flip; renderVCard(); }
+function vMove(n){ vc.i=(vc.i+n+vc.list.length)%vc.list.length; vc.flip=false; renderVCard(); }
+function vCardMark(ok){
+  const v=vc.list[vc.i];
+  vMark(v,ok); bumpQ();
+  if(ok){addXp(4);touchStreak();}
+  toast(ok?'ナイス +4XP':'OK、あとでまた出すね');
+  if(vc.i<vc.list.length-1){vc.i++;vc.flip=false;renderVCard();}
+  else{vc.flip=false;renderVCard();}
+}
+
 /* ===================== 今日の10問 =====================
    苦手 → そろそろ忘れそうな問題 → まだ解いていない問題、の順に優先度をつけて
    毎日10問だけ選ぶ。たまった数は表に出さない。                        */
@@ -1193,6 +1435,14 @@ function finish(){
 }
 renderHome();
 setTimeout(()=>checkUpdate(true),1500);
+
+/* 語彙データの読み込み（本体の表示はブロックしない） */
+loadVocab();
+
+/* Service Worker の登録（オフライン対応） */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
 </script>
 </body>
 </html>
