@@ -37,6 +37,7 @@ JAPANESE UP! の教材は2種類ある。
 ```json
 {
   "version": 2,
+  "contentVersion": "snapshot-3cd9915",
   "levels": ["easy","std","hard"],
   "sets": [
     {"id":"quiz-kanji","field":"kanji","name":"漢字（読み・書き）","file":"quiz-kanji.json","kind":"quiz","count":76},
@@ -57,6 +58,7 @@ JAPANESE UP! の教材は2種類ある。
 | property | 必須 | 意味 |
 |---|---|---|
 | `version` | 必須 | manifest 形式の版。`2`（version 1 は語彙だけの旧形式） |
+| `contentVersion` | 必須 | 教材の版 ID（文字列、空にしない）。batch 取込で `batch_id` に更新される。アプリの教材更新バーがこの値の変化を検出する |
 | `levels` | 任意 | 難易度 ID の一覧（参考情報） |
 | `sets[].kind` | 必須 | `quiz` または `vocab`。アプリはこれで読み分ける |
 | `sets[].id` | 必須 | quiz は `quiz-<分野>`、vocab は `kanji` `yoji` `kotowaza` `kobun`。vocab の id は意味カード等の分類名（アプリ内の `c`）としても使われる |
@@ -176,6 +178,17 @@ python3 -m http.server 8000
 ```
 
 file:// では fetch が動かないので、必ずサーバ経由で開く。
+
+## contentVersion と教材更新バー
+
+`data/index.json` の `contentVersion` は教材の版 ID。アプリは起動時に読んだ値を覚えておき、window の focus / タブが visible に戻ったとき / visible 中は 30 分ごと（同一タブでは最低 60 秒間隔）に `data/index.json` を `cache: "no-store"` で読み直す。値が変わっていれば、学習を止めない小さなバー「🆕 新しい問題があります　[更新] [あとで]」を出す。
+
+- 値は不透明な文字列。大小比較はせず、等しいかどうかだけを見る
+- 初期値は `snapshot-<HEAD 短縮 hash>`。batch 取込時は importer がその batch の `batch_id` に更新する（WORD で talk.json だけを更新した場合も更新する）
+- 手で教材を直したときも、必ず `contentVersion` を新しい値（例: `manual-YYYYMMDD-a`）に変える。変えないと開きっぱなしの端末に更新が伝わらない
+- `更新` は reload、`あとで` は同じタブ・同じ version では再表示しない（別の version なら再表示する）。バーを出すだけでは Q や localStorage は変わらない
+- network error・offline・non-OK・JSON error は静かに無視する
+- `APP_VER` はコード・UI・学習ロジックの更新通知用。教材だけの更新では原則 `APP_VER` を変えず、`contentVersion` だけを更新する
 
 ## 9. Service Worker と教材更新の関係
 

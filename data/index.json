@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "contentVersion": "snapshot-3cd9915",
   "levels": ["easy","std","hard"],
   "sets": [
     {"id":"quiz-kanji","field":"kanji","name":"漢字（読み・書き）","file":"quiz-kanji.json","kind":"quiz","count":77},
