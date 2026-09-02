@@ -1,1 +1,17 @@
-{"version":1,"sets":[{"id":"kanji","name":"漢字の読み","file":"kanji.json","count":140},{"id":"yoji","name":"四字熟語","file":"yoji.json","count":50},{"id":"kotowaza","name":"ことわざ・慣用句","file":"kotowaza.json","count":55},{"id":"kobun","name":"古文単語","file":"kobun.json","count":50}],"total":295}
+{
+  "version": 2,
+  "levels": ["easy","std","hard"],
+  "sets": [
+    {"id":"quiz-kanji","field":"kanji","name":"漢字（読み・書き）","file":"quiz-kanji.json","kind":"quiz","count":76},
+    {"id":"quiz-goi","field":"goi","name":"語彙（熟語・慣用句）","file":"quiz-goi.json","kind":"quiz","count":70},
+    {"id":"quiz-bunpo","field":"bunpo","name":"文法（品詞・敬語）","file":"quiz-bunpo.json","kind":"quiz","count":68},
+    {"id":"quiz-koten","field":"koten","name":"古文・漢文","file":"quiz-koten.json","kind":"quiz","count":66},
+    {"id":"kanji","name":"漢字の読み","file":"kanji.json","kind":"vocab","count":140},
+    {"id":"yoji","name":"四字熟語","file":"yoji.json","kind":"vocab","count":50},
+    {"id":"kotowaza","name":"ことわざ・慣用句","file":"kotowaza.json","kind":"vocab","count":55},
+    {"id":"kobun","name":"古文単語","file":"kobun.json","kind":"vocab","count":50}
+  ],
+  "quizTotal": 280,
+  "vocabTotal": 295,
+  "total": 575
+}

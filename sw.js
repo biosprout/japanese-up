@@ -1,6 +1,6 @@
 // JAPANESE UP! Service Worker
 // 一度読み込んだファイルをキャッシュし、オフラインでも動くようにする
-const CACHE = 'japaneseup-v1';
+const CACHE = 'japaneseup-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -9,6 +9,10 @@ const ASSETS = [
   './icons/icon-512.png',
   './icons/icon-180.png',
   './data/index.json',
+  './data/quiz-kanji.json',
+  './data/quiz-goi.json',
+  './data/quiz-bunpo.json',
+  './data/quiz-koten.json',
   './data/kanji.json',
   './data/yoji.json',
   './data/kotowaza.json',
@@ -31,8 +35,8 @@ self.addEventListener('activate', e => {
   );
 });
 
-// アプリ本体と語彙データはネットワーク優先。失敗したときだけキャッシュを使う。
-// こうしておくと、data/*.json を差し替えるだけで新しい語彙が届く
+// アプリ本体と問題・語彙データはネットワーク優先。失敗したときだけキャッシュを使う。
+// こうしておくと、data/*.json を差し替えるだけで新しい問題や語彙が届く
 // （このファイルの CACHE 版数を上げ直さなくてよい）。
 // アイコンなど変わらないものはキャッシュ優先で速く出す。
 self.addEventListener('fetch', e => {
