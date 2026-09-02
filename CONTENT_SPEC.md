@@ -25,7 +25,12 @@ JAPANESE UP! の教材は2種類ある。
 | `scripts/format-content.mjs` | | データ整形（同上） |
 | `sw.js` | | Service Worker。オフライン用にデータをキャッシュする |
 
-`data/vocab-list.js` が手元にある場合、それは語彙 JSON を生成した元原稿（git 管理外）。JSON を直接編集すると元と食い違うので、語彙を直すときはどちらを正とするか決めてから作業する。
+
+## source of truth
+
+**教材の唯一の source of truth は `data/*.json` である。** 4択も語彙も JSON を直接編集し、`format-content.mjs` → `validate-content.mjs` を通して commit する。
+
+`data/vocab-list.js` は、語彙 JSON を最初に生成したときの元原稿で、今後の source of truth ではない。git では追跡せず（.gitignore 対象）、内容は JSON 生成時点で止まっている。語彙を直すときは `data/kanji.json` 等を直接編集し、vocab-list.js は更新しない（JSON と元原稿を別々に更新する運用はしない）。参考資料として残す場合も、JSON と食い違っていて当然のものとして扱う。
 
 ## 2. manifest（data/index.json）の schema
 
@@ -176,7 +181,9 @@ file:// では fetch が動かないので、必ずサーバ経由で開く。
 
 - `sw.js` は index.html と `data/*.json` を network-first で取得する。オンラインなら常に最新 JSON が届き、オフライン時だけキャッシュを返す
 - JSON を更新するだけなら `sw.js` の `CACHE` 名を変えなくてよい
-- `data/` にファイルを増やしたら `sw.js` の `ASSETS` に追加し、`CACHE` の版数を上げる
+- `data/` にファイルを増やしたら `sw.js` の `ASSETS` に追加し、`CACHE` の版数を上げる（precache に失敗すると新しい Service Worker は install されず、旧版が使われ続ける。ASSETS の path 間違いに注意）
+- cache 名は `japaneseup-` で始まり（`CACHE_PREFIX`）、古い cache の掃除はこの prefix を持つものだけを対象にする。同じ origin にある他の BioSprout アプリの cache には触れない
+- 404 や 500 などの error response は cache に保存しない。network が error を返したときは、正常な cache があればそちらを返す
 
 ## 10. してはいけない変更
 
@@ -185,4 +192,4 @@ file:// では fetch が動かないので、必ずサーバ経由で開く。
 - quiz item への property 追加、語彙 item への未定義 property の追加
 - quiz と vocab のファイル名・set id を衝突させる（quiz は `quiz-` 接頭辞を保つ）
 - index.html に問題の fallback copy を戻す
-- 語彙 JSON と `vocab-list.js` を別々に直して食い違わせる
+- `vocab-list.js` を編集して語彙を直す（source of truth は JSON のみ）

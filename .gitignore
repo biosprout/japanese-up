@@ -6,3 +6,6 @@ Thumbs.db
 # ローカル作業用
 node_modules/
 *.log
+
+# 語彙 JSON の元原稿（source of truth は data/*.json。CONTENT_SPEC.md 参照）
+data/vocab-list.js
